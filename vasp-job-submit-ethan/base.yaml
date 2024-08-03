@@ -1,0 +1,76 @@
+# VASP submission template
+# Ethan Sunshine
+# Janury 2023
+
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: CHANGE_THIS # I recommend changing this in a script
+  namespace: kabdelma # Your namespace
+spec:
+  ttlSecondsAfterFinished: 7200 # How many seconds after job completion do you want the job to still exist? i.e. How long do you want to see it with "Completed" status in Rancher. The pod does not continue to run after completion; this is purely for you to see if your jobs have finished.
+  backoffLimit: 0
+  template:
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                - key: "kubernetes.io/hostname"
+                  operator: "NotIn"
+                  values:
+                         - major-gator          
+      containers:
+        name: CHANGE_THIS # I recommend changing this in a script
+        image: ulissigroup/kubeflow_vasp:amptorch
+        imagePullPolicy: Always
+        
+        # The amount of CPU cores and memory can be set in my script
+        resources:
+          limits:
+            cpu: 16
+            memory: 16Gi
+            nvidia.com/gpu: "0"
+          requests:
+            cpu: 16
+            memory: 16Gi
+            
+        # If your calculations aren't on shared-scratch, add the relevant volume here   
+        volumeMounts:
+        - mountPath: /home/jovyan/shared-datasets/
+          name: shared-datasets
+        - mountPath: /home/jovyan/shared-scratch/
+          name: shared-scratch
+        - mountPath: /dev/shm
+          name: dshm
+        - mountPath: /home/jovyan/
+          name: workspace-cop-model
+         
+         
+        command:
+        - /bin/bash
+        - -c
+        args:
+        # The number of CPU cores can be set in my script. Here, it is -np #.
+        - mpirun -np 16 --map-by hwthread /opt/vasp.6.1.2_pgi_mkl_beef/bin/vasp_std > vasp.out 
+        workingDir: /home/jovyan/CHANGE_THIS # I recommend changing this in a script
+      restartPolicy: Never
+      
+      # If your calculations aren't on shared-scratch, add the relevant volume here 
+      volumes:
+      - name: shared-datasets
+        persistentVolumeClaim:
+          claimName: shared-datasets
+      - name: shared-scratch
+        persistentVolumeClaim:
+          claimName: shared-scratch
+      - emptyDir:
+          medium: Memory
+        name: dshm
+      - name: workspace-cop-model
+        persistentVolumeClaim:
+          claimName: workspace-cop-model
+        
+        
+      priorityClassName: default-priority

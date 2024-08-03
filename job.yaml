@@ -1,0 +1,61 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: neb-211-2
+  namespace: kabdelma
+spec:
+  backoffLimit: 0
+  template:
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                - key: "kubernetes.io/hostname"
+                  operator: "NotIn"
+                  values:
+                         - major-gator
+      containers:
+      - args:
+        - source /home/jovyan/.bashrc; conda activate env; python neb.py > vasp.out
+        command:
+        - /bin/bash
+        - -c
+        image: ulissigroup/kubeflow_vasp:extras-notebook
+        imagePullPolicy: Always
+        name: neb-211-2
+        resources:
+          limits:
+            cpu: 16
+            memory: 32Gi
+            nvidia.com/gpu: '0'
+          requests:
+            cpu: 16
+            memory: 32Gi
+        volumeMounts:
+        - mountPath: /home/jovyan/shared-datasets/
+          name: shared-datasets
+        - mountPath: /home/jovyan/shared-scratch/
+          name: shared-scratch
+        - mountPath: /dev/shm
+          name: dshm
+        - mountPath: /home/jovyan/
+          name: workspace-cop-model
+        workingDir: /home/jovyan/shared-scratch/kabdelma/high_miller_idx/nebs_small_slabs/211/calculation_1
+      priorityClassName: default-priority
+      restartPolicy: Never
+      volumes:
+      - name: shared-datasets
+        persistentVolumeClaim:
+          claimName: shared-datasets
+      - name: shared-scratch
+        persistentVolumeClaim:
+          claimName: shared-scratch
+      - emptyDir:
+          medium: Memory
+        name: dshm
+      - name: workspace-cop-model
+        persistentVolumeClaim:
+          claimName: workspace-cop-model
+  ttlSecondsAfterFinished: 7200

@@ -1,0 +1,1922 @@
+<html>
+<head>
+<title>ASE atomic visualization</title>
+<link rel="stylesheet" type="text/css"
+ href="https://www.x3dom.org/x3dom/release/x3dom.css">
+</link>
+<script type="text/javascript"
+ src="https://www.x3dom.org/x3dom/release/x3dom.js">
+</script>
+<style>
+* {
+    box-sizing: border-box;
+  }
+ 
+/* Create two unequal columns that floats next to each other */
+.column {
+  float: left;
+  padding: 1px;
+}
+
+.left {
+  width: 20%;
+}
+
+.right {
+  width: 80%;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+#x3dase{
+    top:0;
+    width: 80%;
+    height: 80%;
+    border:2px solid darkorange;        
+}
+
+#sidebar{
+    top:0;
+    border:2px solid darkorange;        
+}
+
+
+/* Sidebar component containers */
+.ui-widget-header
+{
+  background-color: lightblue;
+  font-size: 16px;
+
+}
+.sidebarComponent
+{
+    padding:2px 2px 2px 2px;
+    font-size: medium;
+}
+
+.button {
+  background-color: #4CAF50; /* Green */
+  border: 1px solid green;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  cursor: pointer;
+  /* float: left; */
+}
+
+</style></head>
+<body>
+<div class = "column left", id = "sidebar">
+
+    <div class="ui-widget-header">Model</div>
+    <div class="sidebarComponent">
+        <form style="text-align:left;">
+            <button type="button" class = "button" onclick="spacefilling('69f3d864')">Ball</button>
+            <button type="button" class = "button" onclick="ballstick('69f3d864')">Ball-and-stick</button>
+            <button type="button" class = "button" onclick="polyhedra('69f3d864')">Polyhedra</button>
+        </form>
+    </div>
+    <div class="ui-widget-header">Label</div>
+    <div class="sidebarComponent">
+        <form style="text-align:left;">
+            <button type="button" class = "button" onclick="none('69f3d864')">None</button>
+            <button type="button" class = "button" onclick="element('69f3d864')"> Element</button>
+            <button type="button" class = "button" onclick="index('69f3d864')">Index</button>
+        </form>
+    </div>
+
+    <div class="ui-widget-header">Camera</div>
+    <div class="sidebarComponent">
+        <form style="text-align:left;">
+            <button type="button" class = "button" onclick="document.getElementById('camera_ortho_69f3d864').setAttribute('set_bind','true');">Orthographic</button>
+            <button type="button" class = "button" onclick="document.getElementById('camera_persp_69f3d864').setAttribute('set_bind','true');">Perspective</button>
+        </form>
+    </div>
+
+    <div class="ui-widget-header">View</div>
+    <div class="sidebarComponent">
+        <form style="text-align:left;">
+            <button type="button" class = "button" onclick="set_viewpoint('69f3d864', 'top_pos', 'top_ori')">Top</button>
+            <button type="button" class = "button" onclick="set_viewpoint('69f3d864', 'front_pos', 'front_ori')">Front</button>
+            <button type="button" class = "button" onclick="set_viewpoint('69f3d864', 'right_pos', 'right_ori')">Right</button>
+        </form>
+    </div>
+
+    <div class="ui-widget-header">Measurement</div>
+    <div class="sidebarComponent">
+        <form style="text-align:left; font-size: 16px;">
+            <table style="font-size:1.0em;">
+                <td id="lastonMouseoverObject_kind_69f3d864">-</td> <td id="lastonMouseoverObject_index_69f3d864">-</td> 
+                <td id="position_69f3d864">-</td></tr>
+            </table>
+            <p id="measure_69f3d864"></p>
+            <p id="error_69f3d864"></p>
+        </form>
+    </div>
+
+</div>
+
+<script>
+    document.onkeyup = function(e) {
+      var x = event.which || event.keyCode;
+      var label = 0;
+        if (x == 49) {
+            set_viewpoint('69f3d864', 'top_pos', 'top_ori');
+        } else if (x == 50) {
+            set_viewpoint('69f3d864', 'front_pos', 'front_ori');
+        } else if (x == 51) {
+            set_viewpoint('69f3d864', 'right_pos', 'right_ori');
+        } else if (x == 83) {
+          spacefilling('69f3d864');
+        } else if (x == 66) {
+          ballstick('69f3d864');
+        } else if (x == 80) {
+          polyhedra('69f3d864');
+        } else if (x == 52) {
+            element('69f3d864');
+        } else if (x == 53) {
+            index('69f3d864');
+        } else if (x == 54) {
+            none('69f3d864');
+        }
+      };
+    </script> <div class = "column right" > 
+   <X3D id = "x3dase" PrimitiveQuality = "high" > 
+     <Scene > 
+       <Transform id = "t_camera_persp_69f3d864" rotation = "0 0 0 0" > 
+         <Viewpoint id = "camera_persp_69f3d864" position = "2.400673600612177 4.151694261455932 50.08595678982414" centerOfRotation = "2.400673600612177 4.151694261455932 11.082413137450299" orientation = "0 0 0 0" description = "camera" > 
+         </Viewpoint> 
+       </Transform> 
+       <Transform id = "t_camera_ortho_69f3d864" rotation = "0 0 0 0" > 
+         <OrthoViewpoint id = "camera_ortho_69f3d864" position = "2.400673600612177 4.151694261455932 50.08595678982414" centerOfRotation = "2.400673600612177 4.151694261455932 11.082413137450299" orientation = "0 0 0 0" fieldOfView = "-13.001181217457948 -13.001181217457948 13.001181217457948 13.001181217457948" description = "camera" > 
+         </OrthoViewpoint> 
+       </Transform> 
+       <Group onclick = "handleGroupClick(event, '69f3d864')" > 
+         <Switch whichChoice = "-1" > 
+           <Shape DEF = "as_Cu" id = "as_Cu_69f3d864" > 
+             <Appearance DEF = "app_Cu" > 
+               <Material name = "am_69f3d864" diffuseColor = "0.784 0.502 0.2" transparency = "0.01" > 
+               </Material> 
+             </Appearance> 
+             <Sphere DEF = "asp_Cu" radius = "1.32" > 
+             </Sphere> 
+           </Shape> 
+         </Switch> 
+         <Transform DEF = "at_0_69f3d864" uuid = "69f3d864" id = "at_0_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "5.22 3.03 9.99" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "0" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_1_69f3d864" uuid = "69f3d864" id = "at_1_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "6.52 2.28 5.74" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "1" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_2_69f3d864" uuid = "69f3d864" id = "at_2_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "7.82 1.53 7.86" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "2" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_3_69f3d864" uuid = "69f3d864" id = "at_3_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "6.52 0.76 16.34" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "3" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_4_69f3d864" uuid = "69f3d864" id = "at_4_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "6.52 2.28 12.11" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "4" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_5_69f3d864" uuid = "69f3d864" id = "at_5_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "7.82 1.53 14.23" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "5" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_6_69f3d864" uuid = "69f3d864" id = "at_6_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "3.92 5.28 9.99" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "6" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_7_69f3d864" uuid = "69f3d864" id = "at_7_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "5.22 4.53 5.74" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "7" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_8_69f3d864" uuid = "69f3d864" id = "at_8_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "6.52 3.78 7.86" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "8" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_9_69f3d864" uuid = "69f3d864" id = "at_9_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "5.26 2.99 16.31" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "9" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_10_69f3d864" uuid = "69f3d864" id = "at_10_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "5.22 4.53 12.11" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "10" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_11_69f3d864" uuid = "69f3d864" id = "at_11_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "6.52 3.78 14.23" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "11" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_12_69f3d864" uuid = "69f3d864" id = "at_12_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "2.62 7.53 9.99" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "12" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_13_69f3d864" uuid = "69f3d864" id = "at_13_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "3.92 6.78 5.74" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "13" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_14_69f3d864" uuid = "69f3d864" id = "at_14_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "5.22 6.03 7.86" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "14" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_15_69f3d864" uuid = "69f3d864" id = "at_15_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "3.99 5.3 16.37" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "15" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_16_69f3d864" uuid = "69f3d864" id = "at_16_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "3.92 6.78 12.11" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "16" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_17_69f3d864" uuid = "69f3d864" id = "at_17_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "5.22 6.03 14.23" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "17" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_18_69f3d864" uuid = "69f3d864" id = "at_18_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "6.52 0.77 9.99" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "18" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_19_69f3d864" uuid = "69f3d864" id = "at_19_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "7.82 0.02 5.74" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "19" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_20_69f3d864" uuid = "69f3d864" id = "at_20_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "3.92 8.28 7.86" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "20" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_21_69f3d864" uuid = "69f3d864" id = "at_21_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "2.62 7.55 16.31" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "21" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_22_69f3d864" uuid = "69f3d864" id = "at_22_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "7.82 0.02 12.11" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "22" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_23_69f3d864" uuid = "69f3d864" id = "at_23_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "3.92 8.28 14.23" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "23" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_24_69f3d864" uuid = "69f3d864" id = "at_24_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "7.82 3.03 9.99" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "24" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_25_69f3d864" uuid = "69f3d864" id = "at_25_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "-1.28 2.28 5.74" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "25" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_26_69f3d864" uuid = "69f3d864" id = "at_26_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "0.02 1.53 7.86" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "26" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_27_69f3d864" uuid = "69f3d864" id = "at_27_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "9.12 0.76 16.34" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "27" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_28_69f3d864" uuid = "69f3d864" id = "at_28_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "-1.28 2.28 12.11" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "28" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_29_69f3d864" uuid = "69f3d864" id = "at_29_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "0.02 1.53 14.23" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "29" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_30_69f3d864" uuid = "69f3d864" id = "at_30_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "6.52 5.28 9.99" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "30" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_31_69f3d864" uuid = "69f3d864" id = "at_31_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "-2.58 4.53 5.74" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "31" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_32_69f3d864" uuid = "69f3d864" id = "at_32_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "-1.28 3.78 7.86" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "32" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_33_69f3d864" uuid = "69f3d864" id = "at_33_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "7.82 3.01 16.34" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "33" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_34_69f3d864" uuid = "69f3d864" id = "at_34_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "-2.58 4.53 12.11" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "34" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_35_69f3d864" uuid = "69f3d864" id = "at_35_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "-1.28 3.78 14.23" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "35" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_36_69f3d864" uuid = "69f3d864" id = "at_36_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "5.22 7.53 9.99" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "36" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_37_69f3d864" uuid = "69f3d864" id = "at_37_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "-3.88 6.78 5.74" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "37" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_38_69f3d864" uuid = "69f3d864" id = "at_38_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "-2.58 6.03 7.86" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "38" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_39_69f3d864" uuid = "69f3d864" id = "at_39_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "6.54 5.27 16.34" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "39" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_40_69f3d864" uuid = "69f3d864" id = "at_40_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "-3.88 6.78 12.11" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "40" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_41_69f3d864" uuid = "69f3d864" id = "at_41_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "-2.58 6.03 14.23" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "41" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_42_69f3d864" uuid = "69f3d864" id = "at_42_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "9.12 0.77 9.99" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "42" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_43_69f3d864" uuid = "69f3d864" id = "at_43_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "0.02 0.02 5.74" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "43" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_44_69f3d864" uuid = "69f3d864" id = "at_44_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "-3.88 8.28 7.86" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "44" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_45_69f3d864" uuid = "69f3d864" id = "at_45_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "5.24 7.53 16.34" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "45" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_46_69f3d864" uuid = "69f3d864" id = "at_46_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "0.02 0.02 12.11" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "46" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_47_69f3d864" uuid = "69f3d864" id = "at_47_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "-3.88 8.28 14.23" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "47" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_48_69f3d864" uuid = "69f3d864" id = "at_48_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "0.02 3.03 9.99" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "48" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_49_69f3d864" uuid = "69f3d864" id = "at_49_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "1.32 2.28 5.74" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "49" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_50_69f3d864" uuid = "69f3d864" id = "at_50_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "2.62 1.53 7.86" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "50" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_51_69f3d864" uuid = "69f3d864" id = "at_51_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "1.31 0.74 16.33" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "51" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_52_69f3d864" uuid = "69f3d864" id = "at_52_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "1.32 2.28 12.11" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "52" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_53_69f3d864" uuid = "69f3d864" id = "at_53_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "2.62 1.53 14.23" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "53" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_54_69f3d864" uuid = "69f3d864" id = "at_54_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "-1.28 5.28 9.99" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "54" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_55_69f3d864" uuid = "69f3d864" id = "at_55_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "0.02 4.53 5.74" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "55" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_56_69f3d864" uuid = "69f3d864" id = "at_56_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "1.32 3.78 7.86" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "56" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_57_69f3d864" uuid = "69f3d864" id = "at_57_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "-0.01 3.0 16.31" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "57" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_58_69f3d864" uuid = "69f3d864" id = "at_58_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "0.02 4.53 12.11" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "58" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_59_69f3d864" uuid = "69f3d864" id = "at_59_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "1.32 3.78 14.23" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "59" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_60_69f3d864" uuid = "69f3d864" id = "at_60_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "-2.58 7.53 9.99" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "60" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_61_69f3d864" uuid = "69f3d864" id = "at_61_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "-1.28 6.78 5.74" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "61" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_62_69f3d864" uuid = "69f3d864" id = "at_62_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "0.02 6.03 7.86" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "62" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_63_69f3d864" uuid = "69f3d864" id = "at_63_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "-1.31 5.26 16.34" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "63" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_64_69f3d864" uuid = "69f3d864" id = "at_64_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "-1.28 6.78 12.11" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "64" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_65_69f3d864" uuid = "69f3d864" id = "at_65_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "0.02 6.03 14.23" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "65" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_66_69f3d864" uuid = "69f3d864" id = "at_66_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "1.32 0.77 9.99" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "66" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_67_69f3d864" uuid = "69f3d864" id = "at_67_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "2.62 0.02 5.74" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "67" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_68_69f3d864" uuid = "69f3d864" id = "at_68_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "-1.28 8.28 7.86" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "68" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_69_69f3d864" uuid = "69f3d864" id = "at_69_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "-2.58 7.51 16.34" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "69" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_70_69f3d864" uuid = "69f3d864" id = "at_70_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "2.62 0.02 12.11" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "70" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_71_69f3d864" uuid = "69f3d864" id = "at_71_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "-1.28 8.28 14.23" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "71" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_72_69f3d864" uuid = "69f3d864" id = "at_72_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "2.62 3.03 9.99" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "72" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_73_69f3d864" uuid = "69f3d864" id = "at_73_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "3.92 2.28 5.74" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "73" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_74_69f3d864" uuid = "69f3d864" id = "at_74_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "5.22 1.53 7.86" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "74" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_75_69f3d864" uuid = "69f3d864" id = "at_75_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "3.92 0.75 16.34" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "75" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_76_69f3d864" uuid = "69f3d864" id = "at_76_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "3.92 2.28 12.11" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "76" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_77_69f3d864" uuid = "69f3d864" id = "at_77_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "5.22 1.53 14.23" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "77" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_78_69f3d864" uuid = "69f3d864" id = "at_78_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "1.32 5.28 9.99" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "78" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_79_69f3d864" uuid = "69f3d864" id = "at_79_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "2.62 4.53 5.74" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "79" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_80_69f3d864" uuid = "69f3d864" id = "at_80_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "3.92 3.78 7.86" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "80" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_81_69f3d864" uuid = "69f3d864" id = "at_81_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "2.62 2.93 16.35" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "81" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_82_69f3d864" uuid = "69f3d864" id = "at_82_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "2.62 4.53 12.11" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "82" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_83_69f3d864" uuid = "69f3d864" id = "at_83_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "3.92 3.78 14.23" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "83" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_84_69f3d864" uuid = "69f3d864" id = "at_84_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "0.02 7.53 9.99" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "84" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_85_69f3d864" uuid = "69f3d864" id = "at_85_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "1.32 6.78 5.74" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "85" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_86_69f3d864" uuid = "69f3d864" id = "at_86_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "2.62 6.03 7.86" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "86" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_87_69f3d864" uuid = "69f3d864" id = "at_87_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "1.25 5.31 16.36" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "87" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_88_69f3d864" uuid = "69f3d864" id = "at_88_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "1.32 6.78 12.11" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "88" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_89_69f3d864" uuid = "69f3d864" id = "at_89_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "2.62 6.03 14.23" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "89" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_90_69f3d864" uuid = "69f3d864" id = "at_90_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "3.92 0.77 9.99" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "90" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_91_69f3d864" uuid = "69f3d864" id = "at_91_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "5.22 0.02 5.74" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "91" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_92_69f3d864" uuid = "69f3d864" id = "at_92_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "1.32 8.28 7.86" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "92" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_93_69f3d864" uuid = "69f3d864" id = "at_93_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "0.01 7.53 16.34" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "93" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_94_69f3d864" uuid = "69f3d864" id = "at_94_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "5.22 0.02 12.11" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "94" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_95_69f3d864" uuid = "69f3d864" id = "at_95_69f3d864" radius = "1.32" name = "at_69f3d864" translation = "1.32 8.28 14.23" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "95" uuid = "69f3d864" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Switch whichChoice = "-1" > 
+           <Shape DEF = "as_O" id = "as_O_69f3d864" > 
+             <Appearance DEF = "app_O" > 
+               <Material name = "am_69f3d864" diffuseColor = "1.0 0.051 0.051" transparency = "0.01" > 
+               </Material> 
+             </Appearance> 
+             <Sphere DEF = "asp_O" radius = "0.66" > 
+             </Sphere> 
+           </Shape> 
+         </Switch> 
+         <Transform DEF = "at_96_69f3d864" uuid = "69f3d864" id = "at_96_69f3d864" radius = "0.66" name = "at_69f3d864" translation = "2.6 4.5 19.11" scale = "1 1 1" > 
+           <Shape kind = "O" index = "96" uuid = "69f3d864" > 
+             <Appearance USE = "app_O" > 
+             </Appearance> 
+             <Sphere USE = "asp_O" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_97_69f3d864" uuid = "69f3d864" id = "at_97_69f3d864" radius = "0.66" name = "at_69f3d864" translation = "2.6 4.5 17.76" scale = "1 1 1" > 
+           <Shape kind = "O" index = "97" uuid = "69f3d864" > 
+             <Appearance USE = "app_O" > 
+             </Appearance> 
+             <Sphere USE = "asp_O" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+       </Group> 
+       <Shape > 
+         <IndexedLineSet coordIndex = "0 1 -1 0 2 -1 0 4 -1 1 3 -1 1 5 -1 2 3 -1 2 6 -1 3 7 -1 4 5 -1 4 6 -1 5 7 -1 6 7 -1" > 
+           <Coordinate point = "[[ 0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00
+   0.00000000e+00  3.82134074e+01 -5.20018609e+00  9.00698651e+00
+   6.36839125e-16 -5.20018609e+00  9.00698651e+00  3.82134074e+01
+   1.04003722e+01  0.00000000e+00  6.36839125e-16  1.04003722e+01
+   0.00000000e+00  3.82134074e+01  5.20018609e+00  9.00698651e+00
+   1.27367825e-15  5.20018609e+00  9.00698651e+00  3.82134074e+01]]" > 
+           </Coordinate> 
+         </IndexedLineSet> 
+         <Appearance > 
+           <Material diffuseColor = "0 0 0" emissiveColor = "0 0.5 1" > 
+           </Material> 
+         </Appearance> 
+       </Shape> 
+       <Switch id = "switch_marker_0_69f3d864" whichChoice = "-1" > 
+         <Transform id = "marker_0_69f3d864" scale = ".1 .1 .1" translation = "5 0 0" > 
+           <Shape isPickable = "False" > 
+             <Appearance > 
+               <Material diffuseColor = "#FFD966" transparency = "0.5" > 
+               </Material> 
+             </Appearance> 
+             <Sphere radius = "1.0" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+       </Switch> 
+       <Switch id = "switch_marker_1_69f3d864" whichChoice = "-1" > 
+         <Transform id = "marker_1_69f3d864" scale = ".1 .1 .1" translation = "5 0 0" > 
+           <Shape isPickable = "False" > 
+             <Appearance > 
+               <Material diffuseColor = "#FFD966" transparency = "0.5" > 
+               </Material> 
+             </Appearance> 
+             <Sphere radius = "1.0" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+       </Switch> 
+       <Switch id = "switch_marker_2_69f3d864" whichChoice = "-1" > 
+         <Transform id = "marker_2_69f3d864" scale = ".1 .1 .1" translation = "5 0 0" > 
+           <Shape isPickable = "False" > 
+             <Appearance > 
+               <Material diffuseColor = "#FFD966" transparency = "0.5" > 
+               </Material> 
+             </Appearance> 
+             <Sphere radius = "1.0" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+       </Switch> 
+       <Switch id = "switch_marker_3_69f3d864" whichChoice = "-1" > 
+         <Transform id = "marker_3_69f3d864" scale = ".1 .1 .1" translation = "5 0 0" > 
+           <Shape isPickable = "False" > 
+             <Appearance > 
+               <Material diffuseColor = "#FFD966" transparency = "0.5" > 
+               </Material> 
+             </Appearance> 
+             <Sphere radius = "1.0" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+       </Switch> 
+       <Switch id = "switch_marker_4_69f3d864" whichChoice = "-1" > 
+         <Transform id = "marker_4_69f3d864" scale = ".1 .1 .1" translation = "5 0 0" > 
+           <Shape isPickable = "False" > 
+             <Appearance > 
+               <Material diffuseColor = "#FFD966" transparency = "0.5" > 
+               </Material> 
+             </Appearance> 
+             <Sphere radius = "1.0" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+       </Switch> 
+       <Switch id = "switch_line_0_69f3d864" whichChoice = "-1" > 
+         <Shape > 
+           <IndexedLineSet id = "line_ind_0_69f3d864" solid = "false" coordIndex = "0 1 -1" > 
+             <Coordinate id = "line_coor_0_69f3d864" point = "0 0 0 0 0 1" > 
+             </Coordinate> 
+           </IndexedLineSet> 
+           <Appearance > 
+             <Material diffuseColor = "0 0 0" emissiveColor = "0 0.5 1" > 
+             </Material> 
+           </Appearance> 
+         </Shape> 
+       </Switch> 
+       <Switch id = "switch_line_1_69f3d864" whichChoice = "-1" > 
+         <Shape > 
+           <IndexedLineSet id = "line_ind_1_69f3d864" solid = "false" coordIndex = "0 1 -1" > 
+             <Coordinate id = "line_coor_1_69f3d864" point = "0 0 0 0 0 1" > 
+             </Coordinate> 
+           </IndexedLineSet> 
+           <Appearance > 
+             <Material diffuseColor = "0 0 0" emissiveColor = "0 0.5 1" > 
+             </Material> 
+           </Appearance> 
+         </Shape> 
+       </Switch> 
+       <TimeSensor DEF = "time" cycleInterval = "10" loop = "true" > 
+       </TimeSensor> 
+       <PositionInterpolator DEF = "move_0" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "5.215656158616551 3.026416496650058 9.985057949953205 5.215656158616551 3.026416496650058 9.985057949953205 5.215656158616551 3.026416496650058 9.985057949953205 5.215656158616551 3.026416496650058 9.985057949953205 5.215656158616551 3.026416496650058 9.985057949953205 5.215656158616551 3.026416496650058 9.985057949953205 5.215656158616551 3.026416496650058 9.985057949953205 5.215656158616551 3.026416496650058 9.985057949953205 5.215656158616551 3.026416496650058 9.985057949953205 5.215656158616551 3.026416496650058 9.985057949953205 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_0" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_0" fromField = "value_changed" toNode = "at_0_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_1" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "6.515702680169523 2.275834287472414 5.739123790373262 6.515702680169523 2.275834287472414 5.739123790373262 6.515702680169523 2.275834287472414 5.739123790373262 6.515702680169523 2.275834287472414 5.739123790373262 6.515702680169523 2.275834287472414 5.739123790373262 6.515702680169523 2.275834287472414 5.739123790373262 6.515702680169523 2.275834287472414 5.739123790373262 6.515702680169523 2.275834287472414 5.739123790373262 6.515702680169523 2.275834287472414 5.739123790373262 6.515702680169523 2.275834287472414 5.739123790373262 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_1" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_1" fromField = "value_changed" toNode = "at_1_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_2" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "7.815749201722497 1.5252520782947712 7.862090870163235 7.815749201722497 1.5252520782947712 7.862090870163235 7.815749201722497 1.5252520782947712 7.862090870163235 7.815749201722497 1.5252520782947712 7.862090870163235 7.815749201722497 1.5252520782947712 7.862090870163235 7.815749201722497 1.5252520782947712 7.862090870163235 7.815749201722497 1.5252520782947712 7.862090870163235 7.815749201722497 1.5252520782947712 7.862090870163235 7.815749201722497 1.5252520782947712 7.862090870163235 7.815749201722497 1.5252520782947712 7.862090870163235 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_2" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_2" fromField = "value_changed" toNode = "at_2_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_3" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "6.522869355533286 0.7562778302951602 16.3428508042415 6.514374614846556 0.7764943061337294 16.337838299624014 6.515020440746696 0.7757209310322848 16.337658213319028 6.514349332308359 0.7765325317188916 16.33750621173617 6.514593268080976 0.7771269129294095 16.337440187797625 6.516172083499212 0.7801558675023005 16.338124880861095 6.511207417178354 0.7914568717212271 16.34040402805034 6.5111009652198 0.7786609514550105 16.339893073726422 6.510468207843937 0.7775437193439294 16.33401939756054 6.514842720987459 0.80358786039071 16.315551776085414 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_3" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_3" fromField = "value_changed" toNode = "at_3_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_4" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "6.515702680169525 2.275834287472414 12.108025029743175 6.515702680169525 2.275834287472414 12.108025029743175 6.515702680169525 2.275834287472414 12.108025029743175 6.515702680169525 2.275834287472414 12.108025029743175 6.515702680169525 2.275834287472414 12.108025029743175 6.515702680169525 2.275834287472414 12.108025029743175 6.515702680169525 2.275834287472414 12.108025029743175 6.515702680169525 2.275834287472414 12.108025029743175 6.515702680169525 2.275834287472414 12.108025029743175 6.515702680169525 2.275834287472414 12.108025029743175 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_4" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_4" fromField = "value_changed" toNode = "at_4_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_5" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "7.8157492017224985 1.5252520782947692 14.230992109533151 7.8157492017224985 1.5252520782947692 14.230992109533151 7.8157492017224985 1.5252520782947692 14.230992109533151 7.8157492017224985 1.5252520782947692 14.230992109533151 7.8157492017224985 1.5252520782947692 14.230992109533151 7.8157492017224985 1.5252520782947692 14.230992109533151 7.8157492017224985 1.5252520782947692 14.230992109533151 7.8157492017224985 1.5252520782947692 14.230992109533151 7.8157492017224985 1.5252520782947692 14.230992109533151 7.8157492017224985 1.5252520782947692 14.230992109533151 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_5" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_5" fromField = "value_changed" toNode = "at_5_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_6" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "3.9156096370635765 5.2781631241829965 9.985057949953205 3.9156096370635765 5.2781631241829965 9.985057949953205 3.9156096370635765 5.2781631241829965 9.985057949953205 3.9156096370635765 5.2781631241829965 9.985057949953205 3.9156096370635765 5.2781631241829965 9.985057949953205 3.9156096370635765 5.2781631241829965 9.985057949953205 3.9156096370635765 5.2781631241829965 9.985057949953205 3.9156096370635765 5.2781631241829965 9.985057949953205 3.9156096370635765 5.2781631241829965 9.985057949953205 3.9156096370635765 5.2781631241829965 9.985057949953205 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_6" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_6" fromField = "value_changed" toNode = "at_6_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_7" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "5.215656158616548 4.52758091500535 5.739123790373262 5.215656158616548 4.52758091500535 5.739123790373262 5.215656158616548 4.52758091500535 5.739123790373262 5.215656158616548 4.52758091500535 5.739123790373262 5.215656158616548 4.52758091500535 5.739123790373262 5.215656158616548 4.52758091500535 5.739123790373262 5.215656158616548 4.52758091500535 5.739123790373262 5.215656158616548 4.52758091500535 5.739123790373262 5.215656158616548 4.52758091500535 5.739123790373262 5.215656158616548 4.52758091500535 5.739123790373262 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_7" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_7" fromField = "value_changed" toNode = "at_7_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_8" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "6.515702680169523 3.776998705827708 7.862090870163235 6.515702680169523 3.776998705827708 7.862090870163235 6.515702680169523 3.776998705827708 7.862090870163235 6.515702680169523 3.776998705827708 7.862090870163235 6.515702680169523 3.776998705827708 7.862090870163235 6.515702680169523 3.776998705827708 7.862090870163235 6.515702680169523 3.776998705827708 7.862090870163235 6.515702680169523 3.776998705827708 7.862090870163235 6.515702680169523 3.776998705827708 7.862090870163235 6.515702680169523 3.776998705827708 7.862090870163235 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_8" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_8" fromField = "value_changed" toNode = "at_8_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_9" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "5.25537574474594 2.9917464744441626 16.313017947195135 5.255515087129468 3.008095769028262 16.3111079113128 5.256869768675549 3.008526884794529 16.31194278299246 5.255688277136341 3.006478936519998 16.312839481859047 5.252396247328134 3.0058747092577796 16.313972477362935 5.251309444526649 3.0077112159450197 16.310453004518408 5.230364394564991 3.0265081868749584 16.32275596901885 5.227954465050276 3.018741867554343 16.333029420266318 5.179777762010402 3.030055265661811 16.410919464957 5.251439565574927 2.996257510583935 16.31655526131107 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_9" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_9" fromField = "value_changed" toNode = "at_9_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_10" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "5.215656158616551 4.52758091500535 12.108025029743175 5.215656158616551 4.52758091500535 12.108025029743175 5.215656158616551 4.52758091500535 12.108025029743175 5.215656158616551 4.52758091500535 12.108025029743175 5.215656158616551 4.52758091500535 12.108025029743175 5.215656158616551 4.52758091500535 12.108025029743175 5.215656158616551 4.52758091500535 12.108025029743175 5.215656158616551 4.52758091500535 12.108025029743175 5.215656158616551 4.52758091500535 12.108025029743175 5.215656158616551 4.52758091500535 12.108025029743175 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_10" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_10" fromField = "value_changed" toNode = "at_10_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_11" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "6.515702680169524 3.776998705827706 14.230992109533151 6.515702680169524 3.776998705827706 14.230992109533151 6.515702680169524 3.776998705827706 14.230992109533151 6.515702680169524 3.776998705827706 14.230992109533151 6.515702680169524 3.776998705827706 14.230992109533151 6.515702680169524 3.776998705827706 14.230992109533151 6.515702680169524 3.776998705827706 14.230992109533151 6.515702680169524 3.776998705827706 14.230992109533151 6.515702680169524 3.776998705827706 14.230992109533151 6.515702680169524 3.776998705827706 14.230992109533151 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_11" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_11" fromField = "value_changed" toNode = "at_11_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_12" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "2.6155631155106027 7.529909751715932 9.985057949953204 2.6155631155106027 7.529909751715932 9.985057949953204 2.6155631155106027 7.529909751715932 9.985057949953204 2.6155631155106027 7.529909751715932 9.985057949953204 2.6155631155106027 7.529909751715932 9.985057949953204 2.6155631155106027 7.529909751715932 9.985057949953204 2.6155631155106027 7.529909751715932 9.985057949953204 2.6155631155106027 7.529909751715932 9.985057949953204 2.6155631155106027 7.529909751715932 9.985057949953204 2.6155631155106027 7.529909751715932 9.985057949953204 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_12" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_12" fromField = "value_changed" toNode = "at_12_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_13" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "3.9156096370635742 6.779327542538288 5.739123790373262 3.9156096370635742 6.779327542538288 5.739123790373262 3.9156096370635742 6.779327542538288 5.739123790373262 3.9156096370635742 6.779327542538288 5.739123790373262 3.9156096370635742 6.779327542538288 5.739123790373262 3.9156096370635742 6.779327542538288 5.739123790373262 3.9156096370635742 6.779327542538288 5.739123790373262 3.9156096370635742 6.779327542538288 5.739123790373262 3.9156096370635742 6.779327542538288 5.739123790373262 3.9156096370635742 6.779327542538288 5.739123790373262 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_13" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_13" fromField = "value_changed" toNode = "at_13_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_14" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "5.215656158616549 6.028745333360646 7.862090870163235 5.215656158616549 6.028745333360646 7.862090870163235 5.215656158616549 6.028745333360646 7.862090870163235 5.215656158616549 6.028745333360646 7.862090870163235 5.215656158616549 6.028745333360646 7.862090870163235 5.215656158616549 6.028745333360646 7.862090870163235 5.215656158616549 6.028745333360646 7.862090870163235 5.215656158616549 6.028745333360646 7.862090870163235 5.215656158616549 6.028745333360646 7.862090870163235 5.215656158616549 6.028745333360646 7.862090870163235 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_14" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_14" fromField = "value_changed" toNode = "at_14_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_15" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "3.988187272984733 5.300220129218766 16.365255619996056 4.030854768616045 5.308961223241121 16.355509726296575 4.025646738232616 5.308698510831592 16.35916175308447 4.013621741705558 5.3086428927774785 16.361577575992822 3.9907648664898874 5.312464246126255 16.370360938295097 3.965583384873647 5.32143676052617 16.38366633356854 3.9586925941146274 5.3816604012967355 16.38300504221772 3.9846419730538805 5.350257793852697 16.40615411165725 3.9581234902398257 5.297478723261967 16.501859153770244 4.022989099190541 5.284581278934886 16.387793358041183 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_15" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_15" fromField = "value_changed" toNode = "at_15_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_16" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "3.9156096370635742 6.779327542538288 12.108025029743173 3.9156096370635742 6.779327542538288 12.108025029743173 3.9156096370635742 6.779327542538288 12.108025029743173 3.9156096370635742 6.779327542538288 12.108025029743173 3.9156096370635742 6.779327542538288 12.108025029743173 3.9156096370635742 6.779327542538288 12.108025029743173 3.9156096370635742 6.779327542538288 12.108025029743173 3.9156096370635742 6.779327542538288 12.108025029743173 3.9156096370635742 6.779327542538288 12.108025029743173 3.9156096370635742 6.779327542538288 12.108025029743173 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_16" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_16" fromField = "value_changed" toNode = "at_16_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_17" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "5.215656158616549 6.028745333360643 14.23099210953315 5.215656158616549 6.028745333360643 14.23099210953315 5.215656158616549 6.028745333360643 14.23099210953315 5.215656158616549 6.028745333360643 14.23099210953315 5.215656158616549 6.028745333360643 14.23099210953315 5.215656158616549 6.028745333360643 14.23099210953315 5.215656158616549 6.028745333360643 14.23099210953315 5.215656158616549 6.028745333360643 14.23099210953315 5.215656158616549 6.028745333360643 14.23099210953315 5.215656158616549 6.028745333360643 14.23099210953315 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_17" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_17" fromField = "value_changed" toNode = "at_17_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_18" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "6.515702680169525 0.7746698691171219 9.985057949953205 6.515702680169525 0.7746698691171219 9.985057949953205 6.515702680169525 0.7746698691171219 9.985057949953205 6.515702680169525 0.7746698691171219 9.985057949953205 6.515702680169525 0.7746698691171219 9.985057949953205 6.515702680169525 0.7746698691171219 9.985057949953205 6.515702680169525 0.7746698691171219 9.985057949953205 6.515702680169525 0.7746698691171219 9.985057949953205 6.515702680169525 0.7746698691171219 9.985057949953205 6.515702680169525 0.7746698691171219 9.985057949953205 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_18" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_18" fromField = "value_changed" toNode = "at_18_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_19" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "7.8157492017224985 0.024087659939478916 5.739123790373262 7.8157492017224985 0.024087659939478916 5.739123790373262 7.8157492017224985 0.024087659939478916 5.739123790373262 7.8157492017224985 0.024087659939478916 5.739123790373262 7.8157492017224985 0.024087659939478916 5.739123790373262 7.8157492017224985 0.024087659939478916 5.739123790373262 7.8157492017224985 0.024087659939478916 5.739123790373262 7.8157492017224985 0.024087659939478916 5.739123790373262 7.8157492017224985 0.024087659939478916 5.739123790373262 7.8157492017224985 0.024087659939478916 5.739123790373262 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_19" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_19" fromField = "value_changed" toNode = "at_19_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_20" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "3.9156096370635725 8.280491960893581 7.862090870163234 3.9156096370635725 8.280491960893581 7.862090870163234 3.9156096370635725 8.280491960893581 7.862090870163234 3.9156096370635725 8.280491960893581 7.862090870163234 3.9156096370635725 8.280491960893581 7.862090870163234 3.9156096370635725 8.280491960893581 7.862090870163234 3.9156096370635725 8.280491960893581 7.862090870163234 3.9156096370635725 8.280491960893581 7.862090870163234 3.9156096370635725 8.280491960893581 7.862090870163234 3.9156096370635725 8.280491960893581 7.862090870163234 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_20" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_20" fromField = "value_changed" toNode = "at_20_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_21" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "2.619368207163254 7.545075797973584 16.31344742078902 2.613039828444351 7.566405557857283 16.307932317118187 2.61467463932863 7.571025590574752 16.306210108668974 2.6135824168179087 7.577070920701788 16.303009668410297 2.6131294529915916 7.583010799382491 16.299558899734013 2.6139677314629406 7.5920237719338095 16.296407978901712 2.6090714420036836 7.613662587746047 16.303586143182105 2.6160317088831144 7.581723789983373 16.30873227447877 2.613775751664486 7.529010940834947 16.373902881818267 2.6898841264476583 7.614809662862177 16.391946267646393 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_21" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_21" fromField = "value_changed" toNode = "at_21_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_22" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "7.8157492017224985 0.024087659939478916 12.108025029743175 7.8157492017224985 0.024087659939478916 12.108025029743175 7.8157492017224985 0.024087659939478916 12.108025029743175 7.8157492017224985 0.024087659939478916 12.108025029743175 7.8157492017224985 0.024087659939478916 12.108025029743175 7.8157492017224985 0.024087659939478916 12.108025029743175 7.8157492017224985 0.024087659939478916 12.108025029743175 7.8157492017224985 0.024087659939478916 12.108025029743175 7.8157492017224985 0.024087659939478916 12.108025029743175 7.8157492017224985 0.024087659939478916 12.108025029743175 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_22" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_22" fromField = "value_changed" toNode = "at_22_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_23" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "3.9156096370635742 8.280491960893581 14.23099210953315 3.9156096370635742 8.280491960893581 14.23099210953315 3.9156096370635742 8.280491960893581 14.23099210953315 3.9156096370635742 8.280491960893581 14.23099210953315 3.9156096370635742 8.280491960893581 14.23099210953315 3.9156096370635742 8.280491960893581 14.23099210953315 3.9156096370635742 8.280491960893581 14.23099210953315 3.9156096370635742 8.280491960893581 14.23099210953315 3.9156096370635742 8.280491960893581 14.23099210953315 3.9156096370635742 8.280491960893581 14.23099210953315 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_23" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_23" fromField = "value_changed" toNode = "at_23_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_24" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "7.8157492017224985 3.026416496650058 9.985057949953205 7.8157492017224985 3.026416496650058 9.985057949953205 7.8157492017224985 3.026416496650058 9.985057949953205 7.8157492017224985 3.026416496650058 9.985057949953205 7.8157492017224985 3.026416496650058 9.985057949953205 7.8157492017224985 3.026416496650058 9.985057949953205 7.8157492017224985 3.026416496650058 9.985057949953205 7.8157492017224985 3.026416496650058 9.985057949953205 7.8157492017224985 3.026416496650058 9.985057949953205 7.8157492017224985 3.026416496650058 9.985057949953205 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_24" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_24" fromField = "value_changed" toNode = "at_24_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_25" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "-1.2845764491483176 2.275834287472414 5.739123790373263 -1.2845764491483176 2.275834287472414 5.739123790373263 -1.2845764491483176 2.275834287472414 5.739123790373263 -1.2845764491483176 2.275834287472414 5.739123790373263 -1.2845764491483176 2.275834287472414 5.739123790373263 -1.2845764491483176 2.275834287472414 5.739123790373263 -1.2845764491483176 2.275834287472414 5.739123790373263 -1.2845764491483176 2.275834287472414 5.739123790373263 -1.2845764491483176 2.275834287472414 5.739123790373263 -1.2845764491483176 2.275834287472414 5.739123790373263 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_25" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_25" fromField = "value_changed" toNode = "at_25_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_26" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "0.015470072404653801 1.5252520782947712 7.862090870163234 0.015470072404653801 1.5252520782947712 7.862090870163234 0.015470072404653801 1.5252520782947712 7.862090870163234 0.015470072404653801 1.5252520782947712 7.862090870163234 0.015470072404653801 1.5252520782947712 7.862090870163234 0.015470072404653801 1.5252520782947712 7.862090870163234 0.015470072404653801 1.5252520782947712 7.862090870163234 0.015470072404653801 1.5252520782947712 7.862090870163234 0.015470072404653801 1.5252520782947712 7.862090870163234 0.015470072404653801 1.5252520782947712 7.862090870163234 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_26" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_26" fromField = "value_changed" toNode = "at_26_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_27" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "9.116511725203678 0.7602048345553419 16.34154577589326 9.112785215629945 0.775681359279527 16.338074602556166 9.112936016614585 0.7759923840883424 16.337868690297665 9.11323803811413 0.7758021056165206 16.337525629917778 9.11392188305681 0.7769092728552699 16.337263229310853 9.114760861476293 0.7811397770523497 16.337710485845665 9.113567736630895 0.793127693796634 16.339766700175637 9.102955404610414 0.7782812685414149 16.338621989766235 9.096917283116285 0.7715472236654792 16.33672415053179 9.13724108869808 0.78970064622007 16.320059188030616 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_27" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_27" fromField = "value_changed" toNode = "at_27_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_28" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "-1.2845764491483167 2.275834287472414 12.108025029743175 -1.2845764491483167 2.275834287472414 12.108025029743175 -1.2845764491483167 2.275834287472414 12.108025029743175 -1.2845764491483167 2.275834287472414 12.108025029743175 -1.2845764491483167 2.275834287472414 12.108025029743175 -1.2845764491483167 2.275834287472414 12.108025029743175 -1.2845764491483167 2.275834287472414 12.108025029743175 -1.2845764491483167 2.275834287472414 12.108025029743175 -1.2845764491483167 2.275834287472414 12.108025029743175 -1.2845764491483167 2.275834287472414 12.108025029743175 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_28" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_28" fromField = "value_changed" toNode = "at_28_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_29" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "0.0154700724046564 1.5252520782947692 14.230992109533151 0.0154700724046564 1.5252520782947692 14.230992109533151 0.0154700724046564 1.5252520782947692 14.230992109533151 0.0154700724046564 1.5252520782947692 14.230992109533151 0.0154700724046564 1.5252520782947692 14.230992109533151 0.0154700724046564 1.5252520782947692 14.230992109533151 0.0154700724046564 1.5252520782947692 14.230992109533151 0.0154700724046564 1.5252520782947692 14.230992109533151 0.0154700724046564 1.5252520782947692 14.230992109533151 0.0154700724046564 1.5252520782947692 14.230992109533151 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_29" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_29" fromField = "value_changed" toNode = "at_29_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_30" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "6.5157026801695235 5.2781631241829965 9.985057949953204 6.5157026801695235 5.2781631241829965 9.985057949953204 6.5157026801695235 5.2781631241829965 9.985057949953204 6.5157026801695235 5.2781631241829965 9.985057949953204 6.5157026801695235 5.2781631241829965 9.985057949953204 6.5157026801695235 5.2781631241829965 9.985057949953204 6.5157026801695235 5.2781631241829965 9.985057949953204 6.5157026801695235 5.2781631241829965 9.985057949953204 6.5157026801695235 5.2781631241829965 9.985057949953204 6.5157026801695235 5.2781631241829965 9.985057949953204 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_30" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_30" fromField = "value_changed" toNode = "at_30_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_31" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "-2.5846229707012918 4.52758091500535 5.739123790373263 -2.5846229707012918 4.52758091500535 5.739123790373263 -2.5846229707012918 4.52758091500535 5.739123790373263 -2.5846229707012918 4.52758091500535 5.739123790373263 -2.5846229707012918 4.52758091500535 5.739123790373263 -2.5846229707012918 4.52758091500535 5.739123790373263 -2.5846229707012918 4.52758091500535 5.739123790373263 -2.5846229707012918 4.52758091500535 5.739123790373263 -2.5846229707012918 4.52758091500535 5.739123790373263 -2.5846229707012918 4.52758091500535 5.739123790373263 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_31" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_31" fromField = "value_changed" toNode = "at_31_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_32" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "-1.2845764491483203 3.776998705827708 7.862090870163234 -1.2845764491483203 3.776998705827708 7.862090870163234 -1.2845764491483203 3.776998705827708 7.862090870163234 -1.2845764491483203 3.776998705827708 7.862090870163234 -1.2845764491483203 3.776998705827708 7.862090870163234 -1.2845764491483203 3.776998705827708 7.862090870163234 -1.2845764491483203 3.776998705827708 7.862090870163234 -1.2845764491483203 3.776998705827708 7.862090870163234 -1.2845764491483203 3.776998705827708 7.862090870163234 -1.2845764491483203 3.776998705827708 7.862090870163234 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_32" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_32" fromField = "value_changed" toNode = "at_32_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_33" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "7.82256452422703 3.010005211750043 16.342662055881966 7.8134715741677985 3.026768926200994 16.339021195462273 7.814167198815773 3.026614685589406 16.339178102333832 7.8136757270047 3.0265460303798 16.33895205632298 7.813427888102507 3.0252045556842737 16.338776866475502 7.816524572573532 3.028086191993747 16.339177714722574 7.8077284864130085 3.0385539152529066 16.340413389006034 7.801097825836101 3.0267966274417373 16.339380735435107 7.791635142038821 3.0228681277513085 16.336758393303352 7.813799646449979 3.018981572775225 16.346333189296665 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_33" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_33" fromField = "value_changed" toNode = "at_33_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_34" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "-2.5846229707012913 4.52758091500535 12.108025029743175 -2.5846229707012913 4.52758091500535 12.108025029743175 -2.5846229707012913 4.52758091500535 12.108025029743175 -2.5846229707012913 4.52758091500535 12.108025029743175 -2.5846229707012913 4.52758091500535 12.108025029743175 -2.5846229707012913 4.52758091500535 12.108025029743175 -2.5846229707012913 4.52758091500535 12.108025029743175 -2.5846229707012913 4.52758091500535 12.108025029743175 -2.5846229707012913 4.52758091500535 12.108025029743175 -2.5846229707012913 4.52758091500535 12.108025029743175 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_34" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_34" fromField = "value_changed" toNode = "at_34_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_35" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "-1.2845764491483178 3.776998705827706 14.230992109533151 -1.2845764491483178 3.776998705827706 14.230992109533151 -1.2845764491483178 3.776998705827706 14.230992109533151 -1.2845764491483178 3.776998705827706 14.230992109533151 -1.2845764491483178 3.776998705827706 14.230992109533151 -1.2845764491483178 3.776998705827706 14.230992109533151 -1.2845764491483178 3.776998705827706 14.230992109533151 -1.2845764491483178 3.776998705827706 14.230992109533151 -1.2845764491483178 3.776998705827706 14.230992109533151 -1.2845764491483178 3.776998705827706 14.230992109533151 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_35" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_35" fromField = "value_changed" toNode = "at_35_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_36" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "5.21565615861655 7.529909751715932 9.985057949953204 5.21565615861655 7.529909751715932 9.985057949953204 5.21565615861655 7.529909751715932 9.985057949953204 5.21565615861655 7.529909751715932 9.985057949953204 5.21565615861655 7.529909751715932 9.985057949953204 5.21565615861655 7.529909751715932 9.985057949953204 5.21565615861655 7.529909751715932 9.985057949953204 5.21565615861655 7.529909751715932 9.985057949953204 5.21565615861655 7.529909751715932 9.985057949953204 5.21565615861655 7.529909751715932 9.985057949953204 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_36" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_36" fromField = "value_changed" toNode = "at_36_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_37" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "-3.8846694922542664 6.779327542538288 5.739123790373262 -3.8846694922542664 6.779327542538288 5.739123790373262 -3.8846694922542664 6.779327542538288 5.739123790373262 -3.8846694922542664 6.779327542538288 5.739123790373262 -3.8846694922542664 6.779327542538288 5.739123790373262 -3.8846694922542664 6.779327542538288 5.739123790373262 -3.8846694922542664 6.779327542538288 5.739123790373262 -3.8846694922542664 6.779327542538288 5.739123790373262 -3.8846694922542664 6.779327542538288 5.739123790373262 -3.8846694922542664 6.779327542538288 5.739123790373262 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_37" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_37" fromField = "value_changed" toNode = "at_37_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_38" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "-2.5846229707012953 6.028745333360646 7.862090870163232 -2.5846229707012953 6.028745333360646 7.862090870163232 -2.5846229707012953 6.028745333360646 7.862090870163232 -2.5846229707012953 6.028745333360646 7.862090870163232 -2.5846229707012953 6.028745333360646 7.862090870163232 -2.5846229707012953 6.028745333360646 7.862090870163232 -2.5846229707012953 6.028745333360646 7.862090870163232 -2.5846229707012953 6.028745333360646 7.862090870163232 -2.5846229707012953 6.028745333360646 7.862090870163232 -2.5846229707012953 6.028745333360646 7.862090870163232 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_38" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_38" fromField = "value_changed" toNode = "at_38_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_39" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "6.539519740224602 5.268082670294339 16.336620192456174 6.547383406155915 5.286921990560276 16.3321697318359 6.542627171015693 5.286655071128648 16.33139999176713 6.54084087936451 5.28506735223757 16.329466533236253 6.535922184847155 5.28291982092364 16.327282830803767 6.52942616466111 5.2825506432759175 16.32603814015883 6.5270094890546515 5.28909348433943 16.31953498394931 6.539792188695078 5.285512052676419 16.31662856481726 6.531503812312499 5.28507012730043 16.313544669460864 6.541259068106271 5.275306972960775 16.322739333426973 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_39" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_39" fromField = "value_changed" toNode = "at_39_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_40" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "-3.8846694922542655 6.779327542538288 12.108025029743175 -3.8846694922542655 6.779327542538288 12.108025029743175 -3.8846694922542655 6.779327542538288 12.108025029743175 -3.8846694922542655 6.779327542538288 12.108025029743175 -3.8846694922542655 6.779327542538288 12.108025029743175 -3.8846694922542655 6.779327542538288 12.108025029743175 -3.8846694922542655 6.779327542538288 12.108025029743175 -3.8846694922542655 6.779327542538288 12.108025029743175 -3.8846694922542655 6.779327542538288 12.108025029743175 -3.8846694922542655 6.779327542538288 12.108025029743175 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_40" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_40" fromField = "value_changed" toNode = "at_40_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_41" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "-2.584622970701292 6.028745333360643 14.230992109533151 -2.584622970701292 6.028745333360643 14.230992109533151 -2.584622970701292 6.028745333360643 14.230992109533151 -2.584622970701292 6.028745333360643 14.230992109533151 -2.584622970701292 6.028745333360643 14.230992109533151 -2.584622970701292 6.028745333360643 14.230992109533151 -2.584622970701292 6.028745333360643 14.230992109533151 -2.584622970701292 6.028745333360643 14.230992109533151 -2.584622970701292 6.028745333360643 14.230992109533151 -2.584622970701292 6.028745333360643 14.230992109533151 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_41" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_41" fromField = "value_changed" toNode = "at_41_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_42" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "9.115795723275474 0.7746698691171219 9.985057949953205 9.115795723275474 0.7746698691171219 9.985057949953205 9.115795723275474 0.7746698691171219 9.985057949953205 9.115795723275474 0.7746698691171219 9.985057949953205 9.115795723275474 0.7746698691171219 9.985057949953205 9.115795723275474 0.7746698691171219 9.985057949953205 9.115795723275474 0.7746698691171219 9.985057949953205 9.115795723275474 0.7746698691171219 9.985057949953205 9.115795723275474 0.7746698691171219 9.985057949953205 9.115795723275474 0.7746698691171219 9.985057949953205 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_42" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_42" fromField = "value_changed" toNode = "at_42_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_43" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "0.015470072404656055 0.024087659939478916 5.739123790373261 0.015470072404656055 0.024087659939478916 5.739123790373261 0.015470072404656055 0.024087659939478916 5.739123790373261 0.015470072404656055 0.024087659939478916 5.739123790373261 0.015470072404656055 0.024087659939478916 5.739123790373261 0.015470072404656055 0.024087659939478916 5.739123790373261 0.015470072404656055 0.024087659939478916 5.739123790373261 0.015470072404656055 0.024087659939478916 5.739123790373261 0.015470072404656055 0.024087659939478916 5.739123790373261 0.015470072404656055 0.024087659939478916 5.739123790373261 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_43" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_43" fromField = "value_changed" toNode = "at_43_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_44" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "-3.8846694922542695 8.280491960893581 7.862090870163234 -3.8846694922542695 8.280491960893581 7.862090870163234 -3.8846694922542695 8.280491960893581 7.862090870163234 -3.8846694922542695 8.280491960893581 7.862090870163234 -3.8846694922542695 8.280491960893581 7.862090870163234 -3.8846694922542695 8.280491960893581 7.862090870163234 -3.8846694922542695 8.280491960893581 7.862090870163234 -3.8846694922542695 8.280491960893581 7.862090870163234 -3.8846694922542695 8.280491960893581 7.862090870163234 -3.8846694922542695 8.280491960893581 7.862090870163234 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_44" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_44" fromField = "value_changed" toNode = "at_44_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_45" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "5.2371306211238995 7.534060870089749 16.33571671846776 5.22875496825071 7.553566663318971 16.327795552535655 5.229467934907836 7.552544147671412 16.32685442333708 5.230081214649256 7.55348840743963 16.325604946139734 5.230681520269442 7.552949094519788 16.324978267136142 5.2295176172331805 7.550442663111904 16.325583187325346 5.233724286829923 7.564535621109537 16.32936681564664 5.231765445619685 7.550225792365775 16.324040297382748 5.226405715195203 7.540319175918481 16.319862212953964 5.2323606697092435 7.529637039447001 16.311261764450716 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_45" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_45" fromField = "value_changed" toNode = "at_45_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_46" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "0.01547007240465694 0.024087659939478916 12.108025029743175 0.01547007240465694 0.024087659939478916 12.108025029743175 0.01547007240465694 0.024087659939478916 12.108025029743175 0.01547007240465694 0.024087659939478916 12.108025029743175 0.01547007240465694 0.024087659939478916 12.108025029743175 0.01547007240465694 0.024087659939478916 12.108025029743175 0.01547007240465694 0.024087659939478916 12.108025029743175 0.01547007240465694 0.024087659939478916 12.108025029743175 0.01547007240465694 0.024087659939478916 12.108025029743175 0.01547007240465694 0.024087659939478916 12.108025029743175 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_46" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_46" fromField = "value_changed" toNode = "at_46_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_47" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "-3.8846694922542673 8.280491960893581 14.230992109533151 -3.8846694922542673 8.280491960893581 14.230992109533151 -3.8846694922542673 8.280491960893581 14.230992109533151 -3.8846694922542673 8.280491960893581 14.230992109533151 -3.8846694922542673 8.280491960893581 14.230992109533151 -3.8846694922542673 8.280491960893581 14.230992109533151 -3.8846694922542673 8.280491960893581 14.230992109533151 -3.8846694922542673 8.280491960893581 14.230992109533151 -3.8846694922542673 8.280491960893581 14.230992109533151 -3.8846694922542673 8.280491960893581 14.230992109533151 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_47" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_47" fromField = "value_changed" toNode = "at_47_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_48" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "0.015470072404657084 3.026416496650058 9.985057949953205 0.015470072404657084 3.026416496650058 9.985057949953205 0.015470072404657084 3.026416496650058 9.985057949953205 0.015470072404657084 3.026416496650058 9.985057949953205 0.015470072404657084 3.026416496650058 9.985057949953205 0.015470072404657084 3.026416496650058 9.985057949953205 0.015470072404657084 3.026416496650058 9.985057949953205 0.015470072404657084 3.026416496650058 9.985057949953205 0.015470072404657084 3.026416496650058 9.985057949953205 0.015470072404657084 3.026416496650058 9.985057949953205 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_48" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_48" fromField = "value_changed" toNode = "at_48_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_49" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "1.3155165939576294 2.275834287472414 5.739123790373263 1.3155165939576294 2.275834287472414 5.739123790373263 1.3155165939576294 2.275834287472414 5.739123790373263 1.3155165939576294 2.275834287472414 5.739123790373263 1.3155165939576294 2.275834287472414 5.739123790373263 1.3155165939576294 2.275834287472414 5.739123790373263 1.3155165939576294 2.275834287472414 5.739123790373263 1.3155165939576294 2.275834287472414 5.739123790373263 1.3155165939576294 2.275834287472414 5.739123790373263 1.3155165939576294 2.275834287472414 5.739123790373263 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_49" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_49" fromField = "value_changed" toNode = "at_49_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_50" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "2.6155631155106005 1.5252520782947712 7.862090870163234 2.6155631155106005 1.5252520782947712 7.862090870163234 2.6155631155106005 1.5252520782947712 7.862090870163234 2.6155631155106005 1.5252520782947712 7.862090870163234 2.6155631155106005 1.5252520782947712 7.862090870163234 2.6155631155106005 1.5252520782947712 7.862090870163234 2.6155631155106005 1.5252520782947712 7.862090870163234 2.6155631155106005 1.5252520782947712 7.862090870163234 2.6155631155106005 1.5252520782947712 7.862090870163234 2.6155631155106005 1.5252520782947712 7.862090870163234 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_50" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_50" fromField = "value_changed" toNode = "at_50_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_51" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "1.314719920087738 0.7435294966758049 16.333686206896438 1.3138368642646983 0.7775620235796813 16.329172424345288 1.3145626793176548 0.7804361975680064 16.330075591973664 1.3140049547288681 0.7780974942190869 16.330401708986265 1.3092074008038468 0.7709906155514624 16.329066034363887 1.3046992395816823 0.7592568684470488 16.32531296442296 1.3043717725778452 0.7545787299684483 16.32164513741324 1.2919237416559866 0.7399324142436255 16.3208021020394 1.2835971997406086 0.7363025531342209 16.318082069505948 1.2967620223905416 0.7372200313338084 16.322788796161916 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_51" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_51" fromField = "value_changed" toNode = "at_51_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_52" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "1.3155165939576294 2.275834287472414 12.108025029743175 1.3155165939576294 2.275834287472414 12.108025029743175 1.3155165939576294 2.275834287472414 12.108025029743175 1.3155165939576294 2.275834287472414 12.108025029743175 1.3155165939576294 2.275834287472414 12.108025029743175 1.3155165939576294 2.275834287472414 12.108025029743175 1.3155165939576294 2.275834287472414 12.108025029743175 1.3155165939576294 2.275834287472414 12.108025029743175 1.3155165939576294 2.275834287472414 12.108025029743175 1.3155165939576294 2.275834287472414 12.108025029743175 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_52" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_52" fromField = "value_changed" toNode = "at_52_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_53" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "2.6155631155106036 1.5252520782947692 14.230992109533151 2.6155631155106036 1.5252520782947692 14.230992109533151 2.6155631155106036 1.5252520782947692 14.230992109533151 2.6155631155106036 1.5252520782947692 14.230992109533151 2.6155631155106036 1.5252520782947692 14.230992109533151 2.6155631155106036 1.5252520782947692 14.230992109533151 2.6155631155106036 1.5252520782947692 14.230992109533151 2.6155631155106036 1.5252520782947692 14.230992109533151 2.6155631155106036 1.5252520782947692 14.230992109533151 2.6155631155106036 1.5252520782947692 14.230992109533151 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_53" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_53" fromField = "value_changed" toNode = "at_53_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_54" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "-1.284576449148317 5.2781631241829965 9.985057949953205 -1.284576449148317 5.2781631241829965 9.985057949953205 -1.284576449148317 5.2781631241829965 9.985057949953205 -1.284576449148317 5.2781631241829965 9.985057949953205 -1.284576449148317 5.2781631241829965 9.985057949953205 -1.284576449148317 5.2781631241829965 9.985057949953205 -1.284576449148317 5.2781631241829965 9.985057949953205 -1.284576449148317 5.2781631241829965 9.985057949953205 -1.284576449148317 5.2781631241829965 9.985057949953205 -1.284576449148317 5.2781631241829965 9.985057949953205 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_54" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_54" fromField = "value_changed" toNode = "at_54_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_55" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "0.015470072404655293 4.52758091500535 5.739123790373262 0.015470072404655293 4.52758091500535 5.739123790373262 0.015470072404655293 4.52758091500535 5.739123790373262 0.015470072404655293 4.52758091500535 5.739123790373262 0.015470072404655293 4.52758091500535 5.739123790373262 0.015470072404655293 4.52758091500535 5.739123790373262 0.015470072404655293 4.52758091500535 5.739123790373262 0.015470072404655293 4.52758091500535 5.739123790373262 0.015470072404655293 4.52758091500535 5.739123790373262 0.015470072404655293 4.52758091500535 5.739123790373262 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_55" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_55" fromField = "value_changed" toNode = "at_55_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_56" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "1.3155165939576259 3.776998705827708 7.862090870163232 1.3155165939576259 3.776998705827708 7.862090870163232 1.3155165939576259 3.776998705827708 7.862090870163232 1.3155165939576259 3.776998705827708 7.862090870163232 1.3155165939576259 3.776998705827708 7.862090870163232 1.3155165939576259 3.776998705827708 7.862090870163232 1.3155165939576259 3.776998705827708 7.862090870163232 1.3155165939576259 3.776998705827708 7.862090870163232 1.3155165939576259 3.776998705827708 7.862090870163232 1.3155165939576259 3.776998705827708 7.862090870163232 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_56" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_56" fromField = "value_changed" toNode = "at_56_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_57" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "-0.009155869118678099 2.996717503635345 16.311912797764993 -0.028431569666366067 3.0092537756756084 16.312037028117253 -0.028081278554528768 3.008646825140836 16.312665688223348 -0.026401497949099618 3.007258288322463 16.3139298912916 -0.02450014543560881 3.006939690975038 16.315088453222167 -0.016298617604246786 3.010118274042977 16.316547309428024 -0.013256558315006797 3.01685867728332 16.310876363821787 -0.030416221566093103 3.0077940189242476 16.308686591862678 -0.03549955207838927 3.005576536250649 16.307832797916745 -0.016348685423663023 3.0103918898072948 16.304026512591363 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_57" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_57" fromField = "value_changed" toNode = "at_57_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_58" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "0.015470072404655737 4.52758091500535 12.108025029743175 0.015470072404655737 4.52758091500535 12.108025029743175 0.015470072404655737 4.52758091500535 12.108025029743175 0.015470072404655737 4.52758091500535 12.108025029743175 0.015470072404655737 4.52758091500535 12.108025029743175 0.015470072404655737 4.52758091500535 12.108025029743175 0.015470072404655737 4.52758091500535 12.108025029743175 0.015470072404655737 4.52758091500535 12.108025029743175 0.015470072404655737 4.52758091500535 12.108025029743175 0.015470072404655737 4.52758091500535 12.108025029743175 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_58" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_58" fromField = "value_changed" toNode = "at_58_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_59" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "1.3155165939576292 3.776998705827706 14.230992109533151 1.3155165939576292 3.776998705827706 14.230992109533151 1.3155165939576292 3.776998705827706 14.230992109533151 1.3155165939576292 3.776998705827706 14.230992109533151 1.3155165939576292 3.776998705827706 14.230992109533151 1.3155165939576292 3.776998705827706 14.230992109533151 1.3155165939576292 3.776998705827706 14.230992109533151 1.3155165939576292 3.776998705827706 14.230992109533151 1.3155165939576292 3.776998705827706 14.230992109533151 1.3155165939576292 3.776998705827706 14.230992109533151 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_59" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_59" fromField = "value_changed" toNode = "at_59_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_60" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "-2.5846229707012918 7.529909751715932 9.985057949953205 -2.5846229707012918 7.529909751715932 9.985057949953205 -2.5846229707012918 7.529909751715932 9.985057949953205 -2.5846229707012918 7.529909751715932 9.985057949953205 -2.5846229707012918 7.529909751715932 9.985057949953205 -2.5846229707012918 7.529909751715932 9.985057949953205 -2.5846229707012918 7.529909751715932 9.985057949953205 -2.5846229707012918 7.529909751715932 9.985057949953205 -2.5846229707012918 7.529909751715932 9.985057949953205 -2.5846229707012918 7.529909751715932 9.985057949953205 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_60" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_60" fromField = "value_changed" toNode = "at_60_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_61" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "-1.2845764491483196 6.779327542538288 5.739123790373262 -1.2845764491483196 6.779327542538288 5.739123790373262 -1.2845764491483196 6.779327542538288 5.739123790373262 -1.2845764491483196 6.779327542538288 5.739123790373262 -1.2845764491483196 6.779327542538288 5.739123790373262 -1.2845764491483196 6.779327542538288 5.739123790373262 -1.2845764491483196 6.779327542538288 5.739123790373262 -1.2845764491483196 6.779327542538288 5.739123790373262 -1.2845764491483196 6.779327542538288 5.739123790373262 -1.2845764491483196 6.779327542538288 5.739123790373262 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_61" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_61" fromField = "value_changed" toNode = "at_61_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_62" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "0.015470072404651414 6.028745333360646 7.862090870163234 0.015470072404651414 6.028745333360646 7.862090870163234 0.015470072404651414 6.028745333360646 7.862090870163234 0.015470072404651414 6.028745333360646 7.862090870163234 0.015470072404651414 6.028745333360646 7.862090870163234 0.015470072404651414 6.028745333360646 7.862090870163234 0.015470072404651414 6.028745333360646 7.862090870163234 0.015470072404651414 6.028745333360646 7.862090870163234 0.015470072404651414 6.028745333360646 7.862090870163234 0.015470072404651414 6.028745333360646 7.862090870163234 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_62" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_62" fromField = "value_changed" toNode = "at_62_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_63" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "-1.3055947931220433 5.264682512102286 16.335817234737366 -1.3152529353807345 5.286301861926603 16.331845873368913 -1.3137509151368794 5.287011623164797 16.331067836975283 -1.3123105976036142 5.284796344313808 16.32910752866474 -1.308234818963594 5.283708131902704 16.326660018351394 -1.300676579365721 5.2837722782777625 16.324707703251118 -1.289234992185206 5.281285540607082 16.32557203915727 -1.296652247116311 5.27937119633127 16.32309694664495 -1.3065192928125315 5.277341038069729 16.31996424907582 -1.3167315723628668 5.247270667002504 16.301541259690108 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_63" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_63" fromField = "value_changed" toNode = "at_63_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_64" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "-1.2845764491483187 6.779327542538288 12.108025029743175 -1.2845764491483187 6.779327542538288 12.108025029743175 -1.2845764491483187 6.779327542538288 12.108025029743175 -1.2845764491483187 6.779327542538288 12.108025029743175 -1.2845764491483187 6.779327542538288 12.108025029743175 -1.2845764491483187 6.779327542538288 12.108025029743175 -1.2845764491483187 6.779327542538288 12.108025029743175 -1.2845764491483187 6.779327542538288 12.108025029743175 -1.2845764491483187 6.779327542538288 12.108025029743175 -1.2845764491483187 6.779327542538288 12.108025029743175 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_64" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_64" fromField = "value_changed" toNode = "at_64_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_65" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "0.015470072404654924 6.028745333360643 14.230992109533151 0.015470072404654924 6.028745333360643 14.230992109533151 0.015470072404654924 6.028745333360643 14.230992109533151 0.015470072404654924 6.028745333360643 14.230992109533151 0.015470072404654924 6.028745333360643 14.230992109533151 0.015470072404654924 6.028745333360643 14.230992109533151 0.015470072404654924 6.028745333360643 14.230992109533151 0.015470072404654924 6.028745333360643 14.230992109533151 0.015470072404654924 6.028745333360643 14.230992109533151 0.015470072404654924 6.028745333360643 14.230992109533151 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_65" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_65" fromField = "value_changed" toNode = "at_65_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_66" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "1.315516593957631 0.7746698691171219 9.985057949953205 1.315516593957631 0.7746698691171219 9.985057949953205 1.315516593957631 0.7746698691171219 9.985057949953205 1.315516593957631 0.7746698691171219 9.985057949953205 1.315516593957631 0.7746698691171219 9.985057949953205 1.315516593957631 0.7746698691171219 9.985057949953205 1.315516593957631 0.7746698691171219 9.985057949953205 1.315516593957631 0.7746698691171219 9.985057949953205 1.315516593957631 0.7746698691171219 9.985057949953205 1.315516593957631 0.7746698691171219 9.985057949953205 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_66" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_66" fromField = "value_changed" toNode = "at_66_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_67" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "2.6155631155106036 0.024087659939478916 5.739123790373261 2.6155631155106036 0.024087659939478916 5.739123790373261 2.6155631155106036 0.024087659939478916 5.739123790373261 2.6155631155106036 0.024087659939478916 5.739123790373261 2.6155631155106036 0.024087659939478916 5.739123790373261 2.6155631155106036 0.024087659939478916 5.739123790373261 2.6155631155106036 0.024087659939478916 5.739123790373261 2.6155631155106036 0.024087659939478916 5.739123790373261 2.6155631155106036 0.024087659939478916 5.739123790373261 2.6155631155106036 0.024087659939478916 5.739123790373261 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_67" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_67" fromField = "value_changed" toNode = "at_67_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_68" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "-1.2845764491483223 8.280491960893581 7.862090870163234 -1.2845764491483223 8.280491960893581 7.862090870163234 -1.2845764491483223 8.280491960893581 7.862090870163234 -1.2845764491483223 8.280491960893581 7.862090870163234 -1.2845764491483223 8.280491960893581 7.862090870163234 -1.2845764491483223 8.280491960893581 7.862090870163234 -1.2845764491483223 8.280491960893581 7.862090870163234 -1.2845764491483223 8.280491960893581 7.862090870163234 -1.2845764491483223 8.280491960893581 7.862090870163234 -1.2845764491483223 8.280491960893581 7.862090870163234 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_68" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_68" fromField = "value_changed" toNode = "at_68_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_69" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "-2.581623181681373 7.512445279803444 16.343516350841778 -2.584957549313588 7.541975826302693 16.33431239904036 -2.5844001649930517 7.542362166406102 16.334083275955194 -2.585021196350795 7.539418626729606 16.33329285867451 -2.5866229895671906 7.5381906833545855 16.332857496358745 -2.585126883014936 7.533706215079855 16.333654734050352 -2.581345819990095 7.527007528428587 16.336718608067514 -2.584604880542214 7.525148845655941 16.336755676931208 -2.5894751090811012 7.524253531347858 16.336238567284205 -2.624396039718057 7.520856767913599 16.32005373398057 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_69" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_69" fromField = "value_changed" toNode = "at_69_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_70" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "2.6155631155106036 0.024087659939478916 12.108025029743175 2.6155631155106036 0.024087659939478916 12.108025029743175 2.6155631155106036 0.024087659939478916 12.108025029743175 2.6155631155106036 0.024087659939478916 12.108025029743175 2.6155631155106036 0.024087659939478916 12.108025029743175 2.6155631155106036 0.024087659939478916 12.108025029743175 2.6155631155106036 0.024087659939478916 12.108025029743175 2.6155631155106036 0.024087659939478916 12.108025029743175 2.6155631155106036 0.024087659939478916 12.108025029743175 2.6155631155106036 0.024087659939478916 12.108025029743175 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_70" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_70" fromField = "value_changed" toNode = "at_70_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_71" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "-1.28457644914832 8.280491960893581 14.230992109533151 -1.28457644914832 8.280491960893581 14.230992109533151 -1.28457644914832 8.280491960893581 14.230992109533151 -1.28457644914832 8.280491960893581 14.230992109533151 -1.28457644914832 8.280491960893581 14.230992109533151 -1.28457644914832 8.280491960893581 14.230992109533151 -1.28457644914832 8.280491960893581 14.230992109533151 -1.28457644914832 8.280491960893581 14.230992109533151 -1.28457644914832 8.280491960893581 14.230992109533151 -1.28457644914832 8.280491960893581 14.230992109533151 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_71" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_71" fromField = "value_changed" toNode = "at_71_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_72" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "2.615563115510605 3.026416496650058 9.985057949953205 2.615563115510605 3.026416496650058 9.985057949953205 2.615563115510605 3.026416496650058 9.985057949953205 2.615563115510605 3.026416496650058 9.985057949953205 2.615563115510605 3.026416496650058 9.985057949953205 2.615563115510605 3.026416496650058 9.985057949953205 2.615563115510605 3.026416496650058 9.985057949953205 2.615563115510605 3.026416496650058 9.985057949953205 2.615563115510605 3.026416496650058 9.985057949953205 2.615563115510605 3.026416496650058 9.985057949953205 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_72" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_72" fromField = "value_changed" toNode = "at_72_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_73" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "3.915609637063577 2.275834287472414 5.739123790373262 3.915609637063577 2.275834287472414 5.739123790373262 3.915609637063577 2.275834287472414 5.739123790373262 3.915609637063577 2.275834287472414 5.739123790373262 3.915609637063577 2.275834287472414 5.739123790373262 3.915609637063577 2.275834287472414 5.739123790373262 3.915609637063577 2.275834287472414 5.739123790373262 3.915609637063577 2.275834287472414 5.739123790373262 3.915609637063577 2.275834287472414 5.739123790373262 3.915609637063577 2.275834287472414 5.739123790373262 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_73" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_73" fromField = "value_changed" toNode = "at_73_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_74" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "5.215656158616547 1.5252520782947712 7.862090870163232 5.215656158616547 1.5252520782947712 7.862090870163232 5.215656158616547 1.5252520782947712 7.862090870163232 5.215656158616547 1.5252520782947712 7.862090870163232 5.215656158616547 1.5252520782947712 7.862090870163232 5.215656158616547 1.5252520782947712 7.862090870163232 5.215656158616547 1.5252520782947712 7.862090870163232 5.215656158616547 1.5252520782947712 7.862090870163232 5.215656158616547 1.5252520782947712 7.862090870163232 5.215656158616547 1.5252520782947712 7.862090870163232 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_74" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_74" fromField = "value_changed" toNode = "at_74_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_75" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "3.922249157284424 0.7454068249819369 16.335319818602475 3.9161704983581194 0.7767921754897475 16.32854320412838 3.9148030034502126 0.7793368475320639 16.32955181660167 3.915010651586045 0.7771083293323605 16.32960191393039 3.9169933638854615 0.7711420105956965 16.3281765232084 3.9240475324837725 0.7585823903188815 16.3245969507017 3.931560414207953 0.7392043964465865 16.318433205395255 3.9252336016861613 0.733609236423341 16.320164740295812 3.9201988157503855 0.7303087743702451 16.322381290306787 3.89247416594376 0.7551284916448225 16.30079584156779 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_75" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_75" fromField = "value_changed" toNode = "at_75_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_76" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "3.915609637063577 2.275834287472414 12.108025029743175 3.915609637063577 2.275834287472414 12.108025029743175 3.915609637063577 2.275834287472414 12.108025029743175 3.915609637063577 2.275834287472414 12.108025029743175 3.915609637063577 2.275834287472414 12.108025029743175 3.915609637063577 2.275834287472414 12.108025029743175 3.915609637063577 2.275834287472414 12.108025029743175 3.915609637063577 2.275834287472414 12.108025029743175 3.915609637063577 2.275834287472414 12.108025029743175 3.915609637063577 2.275834287472414 12.108025029743175 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_76" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_76" fromField = "value_changed" toNode = "at_76_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_77" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "5.215656158616552 1.5252520782947692 14.230992109533151 5.215656158616552 1.5252520782947692 14.230992109533151 5.215656158616552 1.5252520782947692 14.230992109533151 5.215656158616552 1.5252520782947692 14.230992109533151 5.215656158616552 1.5252520782947692 14.230992109533151 5.215656158616552 1.5252520782947692 14.230992109533151 5.215656158616552 1.5252520782947692 14.230992109533151 5.215656158616552 1.5252520782947692 14.230992109533151 5.215656158616552 1.5252520782947692 14.230992109533151 5.215656158616552 1.5252520782947692 14.230992109533151 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_77" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_77" fromField = "value_changed" toNode = "at_77_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_78" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "1.3155165939576308 5.2781631241829965 9.985057949953205 1.3155165939576308 5.2781631241829965 9.985057949953205 1.3155165939576308 5.2781631241829965 9.985057949953205 1.3155165939576308 5.2781631241829965 9.985057949953205 1.3155165939576308 5.2781631241829965 9.985057949953205 1.3155165939576308 5.2781631241829965 9.985057949953205 1.3155165939576308 5.2781631241829965 9.985057949953205 1.3155165939576308 5.2781631241829965 9.985057949953205 1.3155165939576308 5.2781631241829965 9.985057949953205 1.3155165939576308 5.2781631241829965 9.985057949953205 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_78" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_78" fromField = "value_changed" toNode = "at_78_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_79" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "2.6155631155106027 4.52758091500535 5.739123790373262 2.6155631155106027 4.52758091500535 5.739123790373262 2.6155631155106027 4.52758091500535 5.739123790373262 2.6155631155106027 4.52758091500535 5.739123790373262 2.6155631155106027 4.52758091500535 5.739123790373262 2.6155631155106027 4.52758091500535 5.739123790373262 2.6155631155106027 4.52758091500535 5.739123790373262 2.6155631155106027 4.52758091500535 5.739123790373262 2.6155631155106027 4.52758091500535 5.739123790373262 2.6155631155106027 4.52758091500535 5.739123790373262 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_79" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_79" fromField = "value_changed" toNode = "at_79_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_80" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "3.9156096370635733 3.776998705827708 7.862090870163234 3.9156096370635733 3.776998705827708 7.862090870163234 3.9156096370635733 3.776998705827708 7.862090870163234 3.9156096370635733 3.776998705827708 7.862090870163234 3.9156096370635733 3.776998705827708 7.862090870163234 3.9156096370635733 3.776998705827708 7.862090870163234 3.9156096370635733 3.776998705827708 7.862090870163234 3.9156096370635733 3.776998705827708 7.862090870163234 3.9156096370635733 3.776998705827708 7.862090870163234 3.9156096370635733 3.776998705827708 7.862090870163234 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_80" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_80" fromField = "value_changed" toNode = "at_80_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_81" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "2.62397240709971 2.9319540862230915 16.354457774633623 2.613871251349631 2.9991815448640384 16.384521009757552 2.615143082759085 2.9925638431464017 16.44112778883426 2.61406793015205 2.975105970712235 16.50303864723361 2.613951313793834 2.947028526427253 16.525601728485576 2.6153619481027146 2.92318300845528 16.466236541834 2.6154568557662325 2.925058190955361 16.371439795907232 2.5806925288471287 2.9109093910953874 16.347414851620968 2.54809041274533 2.897296497734914 16.3551910407886 2.5937554958442375 2.9042012427951156 16.36584192779492 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_81" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_81" fromField = "value_changed" toNode = "at_81_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_82" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "2.6155631155106027 4.52758091500535 12.108025029743175 2.6155631155106027 4.52758091500535 12.108025029743175 2.6155631155106027 4.52758091500535 12.108025029743175 2.6155631155106027 4.52758091500535 12.108025029743175 2.6155631155106027 4.52758091500535 12.108025029743175 2.6155631155106027 4.52758091500535 12.108025029743175 2.6155631155106027 4.52758091500535 12.108025029743175 2.6155631155106027 4.52758091500535 12.108025029743175 2.6155631155106027 4.52758091500535 12.108025029743175 2.6155631155106027 4.52758091500535 12.108025029743175 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_82" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_82" fromField = "value_changed" toNode = "at_82_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_83" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "3.9156096370635765 3.776998705827706 14.230992109533151 3.9156096370635765 3.776998705827706 14.230992109533151 3.9156096370635765 3.776998705827706 14.230992109533151 3.9156096370635765 3.776998705827706 14.230992109533151 3.9156096370635765 3.776998705827706 14.230992109533151 3.9156096370635765 3.776998705827706 14.230992109533151 3.9156096370635765 3.776998705827706 14.230992109533151 3.9156096370635765 3.776998705827706 14.230992109533151 3.9156096370635765 3.776998705827706 14.230992109533151 3.9156096370635765 3.776998705827706 14.230992109533151 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_83" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_83" fromField = "value_changed" toNode = "at_83_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_84" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "0.015470072404656861 7.529909751715932 9.985057949953205 0.015470072404656861 7.529909751715932 9.985057949953205 0.015470072404656861 7.529909751715932 9.985057949953205 0.015470072404656861 7.529909751715932 9.985057949953205 0.015470072404656861 7.529909751715932 9.985057949953205 0.015470072404656861 7.529909751715932 9.985057949953205 0.015470072404656861 7.529909751715932 9.985057949953205 0.015470072404656861 7.529909751715932 9.985057949953205 0.015470072404656861 7.529909751715932 9.985057949953205 0.015470072404656861 7.529909751715932 9.985057949953205 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_84" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_84" fromField = "value_changed" toNode = "at_84_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_85" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "1.3155165939576288 6.779327542538288 5.739123790373262 1.3155165939576288 6.779327542538288 5.739123790373262 1.3155165939576288 6.779327542538288 5.739123790373262 1.3155165939576288 6.779327542538288 5.739123790373262 1.3155165939576288 6.779327542538288 5.739123790373262 1.3155165939576288 6.779327542538288 5.739123790373262 1.3155165939576288 6.779327542538288 5.739123790373262 1.3155165939576288 6.779327542538288 5.739123790373262 1.3155165939576288 6.779327542538288 5.739123790373262 1.3155165939576288 6.779327542538288 5.739123790373262 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_85" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_85" fromField = "value_changed" toNode = "at_85_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_86" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "2.6155631155105983 6.028745333360646 7.862090870163234 2.6155631155105983 6.028745333360646 7.862090870163234 2.6155631155105983 6.028745333360646 7.862090870163234 2.6155631155105983 6.028745333360646 7.862090870163234 2.6155631155105983 6.028745333360646 7.862090870163234 2.6155631155105983 6.028745333360646 7.862090870163234 2.6155631155105983 6.028745333360646 7.862090870163234 2.6155631155105983 6.028745333360646 7.862090870163234 2.6155631155105983 6.028745333360646 7.862090870163234 2.6155631155105983 6.028745333360646 7.862090870163234 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_86" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_86" fromField = "value_changed" toNode = "at_86_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_87" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "1.2477766135282433 5.30768421520436 16.363420333177608 1.2057191246271077 5.309993658644197 16.36612830624177 1.208286377750943 5.308444589511455 16.364542307818407 1.2204194457573985 5.310368592565965 16.367725354285128 1.237172300862344 5.3114462123042 16.375440280103327 1.2622367132216656 5.329254629415808 16.383425884956516 1.2814895501003392 5.329403535053755 16.404210030103883 1.2550251755712873 5.309197339903244 16.389905914391402 1.2226960402921467 5.29801062873087 16.403671094616744 1.2476348078179536 5.24618929131438 16.562851485996767 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_87" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_87" fromField = "value_changed" toNode = "at_87_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_88" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "1.3155165939576288 6.779327542538288 12.108025029743175 1.3155165939576288 6.779327542538288 12.108025029743175 1.3155165939576288 6.779327542538288 12.108025029743175 1.3155165939576288 6.779327542538288 12.108025029743175 1.3155165939576288 6.779327542538288 12.108025029743175 1.3155165939576288 6.779327542538288 12.108025029743175 1.3155165939576288 6.779327542538288 12.108025029743175 1.3155165939576288 6.779327542538288 12.108025029743175 1.3155165939576288 6.779327542538288 12.108025029743175 1.3155165939576288 6.779327542538288 12.108025029743175 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_88" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_88" fromField = "value_changed" toNode = "at_88_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_89" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "2.6155631155106027 6.028745333360643 14.230992109533151 2.6155631155106027 6.028745333360643 14.230992109533151 2.6155631155106027 6.028745333360643 14.230992109533151 2.6155631155106027 6.028745333360643 14.230992109533151 2.6155631155106027 6.028745333360643 14.230992109533151 2.6155631155106027 6.028745333360643 14.230992109533151 2.6155631155106027 6.028745333360643 14.230992109533151 2.6155631155106027 6.028745333360643 14.230992109533151 2.6155631155106027 6.028745333360643 14.230992109533151 2.6155631155106027 6.028745333360643 14.230992109533151 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_89" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_89" fromField = "value_changed" toNode = "at_89_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_90" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "3.915609637063578 0.7746698691171219 9.985057949953204 3.915609637063578 0.7746698691171219 9.985057949953204 3.915609637063578 0.7746698691171219 9.985057949953204 3.915609637063578 0.7746698691171219 9.985057949953204 3.915609637063578 0.7746698691171219 9.985057949953204 3.915609637063578 0.7746698691171219 9.985057949953204 3.915609637063578 0.7746698691171219 9.985057949953204 3.915609637063578 0.7746698691171219 9.985057949953204 3.915609637063578 0.7746698691171219 9.985057949953204 3.915609637063578 0.7746698691171219 9.985057949953204 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_90" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_90" fromField = "value_changed" toNode = "at_90_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_91" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "5.215656158616551 0.024087659939478916 5.739123790373264 5.215656158616551 0.024087659939478916 5.739123790373264 5.215656158616551 0.024087659939478916 5.739123790373264 5.215656158616551 0.024087659939478916 5.739123790373264 5.215656158616551 0.024087659939478916 5.739123790373264 5.215656158616551 0.024087659939478916 5.739123790373264 5.215656158616551 0.024087659939478916 5.739123790373264 5.215656158616551 0.024087659939478916 5.739123790373264 5.215656158616551 0.024087659939478916 5.739123790373264 5.215656158616551 0.024087659939478916 5.739123790373264 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_91" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_91" fromField = "value_changed" toNode = "at_91_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_92" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "1.3155165939576243 8.280491960893581 7.862090870163235 1.3155165939576243 8.280491960893581 7.862090870163235 1.3155165939576243 8.280491960893581 7.862090870163235 1.3155165939576243 8.280491960893581 7.862090870163235 1.3155165939576243 8.280491960893581 7.862090870163235 1.3155165939576243 8.280491960893581 7.862090870163235 1.3155165939576243 8.280491960893581 7.862090870163235 1.3155165939576243 8.280491960893581 7.862090870163235 1.3155165939576243 8.280491960893581 7.862090870163235 1.3155165939576243 8.280491960893581 7.862090870163235 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_92" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_92" fromField = "value_changed" toNode = "at_92_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_93" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "0.006062888690115204 7.533972120395384 16.336695147408065 0.0005751427631329709 7.550773997056978 16.326218738408542 0.0011171595155263804 7.552527630271497 16.325572620088142 -0.0005310986853866034 7.5530695150458484 16.324841645951054 -0.002898076221061468 7.553413807880062 16.325060951996583 -0.0006959187251459006 7.554449489704208 16.326168510437423 0.007111857044487927 7.546843505767361 16.323159089387353 0.0012857334566675586 7.545606319449412 16.32053796963463 -0.0057843160851212 7.5455010824932325 16.323820023424993 -0.10049694491599094 7.563992667652963 16.373273851918363 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_93" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_93" fromField = "value_changed" toNode = "at_93_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_94" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "5.215656158616551 0.024087659939478916 12.108025029743173 5.215656158616551 0.024087659939478916 12.108025029743173 5.215656158616551 0.024087659939478916 12.108025029743173 5.215656158616551 0.024087659939478916 12.108025029743173 5.215656158616551 0.024087659939478916 12.108025029743173 5.215656158616551 0.024087659939478916 12.108025029743173 5.215656158616551 0.024087659939478916 12.108025029743173 5.215656158616551 0.024087659939478916 12.108025029743173 5.215656158616551 0.024087659939478916 12.108025029743173 5.215656158616551 0.024087659939478916 12.108025029743173 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_94" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_94" fromField = "value_changed" toNode = "at_94_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_95" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "1.3155165939576279 8.280491960893581 14.230992109533148 1.3155165939576279 8.280491960893581 14.230992109533148 1.3155165939576279 8.280491960893581 14.230992109533148 1.3155165939576279 8.280491960893581 14.230992109533148 1.3155165939576279 8.280491960893581 14.230992109533148 1.3155165939576279 8.280491960893581 14.230992109533148 1.3155165939576279 8.280491960893581 14.230992109533148 1.3155165939576279 8.280491960893581 14.230992109533148 1.3155165939576279 8.280491960893581 14.230992109533148 1.3155165939576279 8.280491960893581 14.230992109533148 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_95" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_95" fromField = "value_changed" toNode = "at_95_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_96" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "2.600093043105944 4.503493255065873 19.106703718109756 2.6041948454730006 3.9503854694096248 18.87668309023526 2.6047353398618385 3.815452347972777 18.728218358781408 2.60569424417822 3.711646526148729 18.553390369646376 2.6055214805641276 3.6570284461985145 18.398510780458082 2.5884566682550205 3.641760001778 18.266281534042573 2.8519871398027234 3.692830061122014 18.1222772149296 3.146427032252159 3.837001540917615 17.965677596047914 3.463313102631964 3.66733983783143 17.77195758391681 2.7782737605943506 4.384524727342648 17.49884636410186 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_96" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_96" fromField = "value_changed" toNode = "at_96_69f3d864" toField = "translation" > 
+       </ROUTE> 
+       <PositionInterpolator DEF = "move_97" key = " 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9" keyValue = "2.6016134251330483 4.504499260963405 17.75835509115613 2.6178155835701022 4.676813659929117 17.711558495885452 2.6169525595703718 4.785433326669766 17.72822493987033 2.6194792415840413 4.896982555373823 17.771779266201087 2.6179550345114757 4.98052772290534 17.823984766223475 2.607940538916936 5.037849550564389 17.86807099965217 2.6469673199561736 5.118669951925332 17.89448098669492 2.5945185762509424 5.20825163987642 17.887526485091374 2.497000755825005 5.558854859553774 17.755160707871603 1.28496258775767 7.000616001526113 17.50048827692017 " > 
+       </PositionInterpolator> 
+       <ROUTE fromNode = "time" fromField = "fraction_changed" toNode = "move_97" toField = "set_fraction" > 
+       </ROUTE> 
+       <ROUTE fromNode = "move_97" fromField = "value_changed" toNode = "at_97_69f3d864" toField = "translation" > 
+       </ROUTE> 
+     </Scene> 
+   </X3D> 
+ </div> 
+
+<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.0.min.js" ></script>
+ <script >
+ if (atoms_dict == undefined) {var atoms_dict = {"new": true};}; 
+atoms_dict["69f3d864"] = {com: "2.40 4.15 11.08", 
+top_pos: "2.40 4.15 50.09", 
+front_pos: "2.40 -34.85 11.08", 
+right_pos: "41.40 4.15 11.08", 
+left_pos: "-36.60 4.15 11.08", 
+top_ori: "0 0 0 0", 
+front_ori: "1 0 0 1.57079", 
+right_ori: "0 1 0 1.57079", 
+left_ori: "0 1 0 -1.57079", 
+select: [], 
+uuid: "69f3d864", 
+label: "False", 
+bond: "False", 
+polyhedra: {}, 
+};
+
+// if (atoms_dict[uuid]['new']){
+function setQuality(uuid, quality){
+        // $('#error_'.concat(atoms_dict[uuid]['uuid'])).html('uuid: '.concat(atoms_dict[uuid]["uuid"]));
+        var x3d = 'x3dase_' + uuid;
+        document.getElementById(x3d).setAttribute('PrimitiveQuality', quality);
+    }
+function set_viewpoint(uuid, pos, ori){
+    // $('#error_'.concat(atoms_dict[uuid]['uuid'])).html('uuid: '.concat(atoms_dict[uuid]["uuid"]));
+    var persp = 'camera_persp_' + uuid;
+    var ortho = 'camera_ortho_' + uuid;
+    document.getElementById(persp).setAttribute('orientation', atoms_dict[uuid][ori]);
+    document.getElementById(persp).setAttribute('position', atoms_dict[uuid][pos]);
+    document.getElementById(ortho).setAttribute('orientation', atoms_dict[uuid][ori]);
+    document.getElementById(ortho).setAttribute('position', atoms_dict[uuid][pos]);
+}
+
+//Round a float value to x.xx format
+function roundWithTwoDecimals(value)
+{
+    var x = (Math.round(value * 100)) / 100;
+    var y = x.toFixed(2);
+    return y;
+}
+//Handle click on any group member
+function handleGroupClick(event)
+{
+    //Mark hitting point
+    var target = event.target;
+    var uuid = target.parentNode.getAttribute('uuid')
+    var radius = target.parentNode.getAttribute('radius');
+    var scale = target.parentNode.getAttribute('scale');
+    scale = parseFloat(radius)*parseFloat(scale)*1.2;
+    var scale = ' ' + scale + ' ' + scale + ' ' + scale;
+    var translation = target.parentNode.getAttribute('translation');
+    var id = target.parentNode.getAttribute('id');
+    if (window.event.ctrlKey) {
+        atoms_dict[uuid]['select'].push(id);
+
+    }
+    else {
+        for (var i=1; i<= atoms_dict[uuid]['select'].length; i++) {
+            $('#switch_marker_' + i + '_' + uuid).attr('whichChoice', -1);
+        }
+        atoms_dict[uuid]['select'] = [];
+        atoms_dict[uuid]['select'].push(id);
+        $('#switch_marker_' + 2 + '_' + uuid).attr('whichChoice', -1);
+}
+    var n = atoms_dict[uuid]['select'].length;
+    $('#switch_marker_' + n + '_' + uuid).attr('whichChoice', 0);
+    $('#marker_' + n + '_' + uuid).attr('translation', translation);
+    $('#marker_' + n + '_' + uuid).attr('scale', scale);
+    var atom_kind = '#lastonMouseoverObject_kind_'.concat(uuid);
+    var atom_index = '#lastonMouseoverObject_index_'.concat(uuid);
+    $(atom_kind).html(target.getAttribute("kind"));
+    $(atom_index).html(target.getAttribute("index"));
+    //
+    var coord = translation.split(" ")
+    var atom_position = '#position_'.concat(uuid);
+    var x = roundWithTwoDecimals(coord[0]);
+    var y = roundWithTwoDecimals(coord[1]);
+    var z = roundWithTwoDecimals(coord[2]);
+    var position = 'x = ' + x + ' y = ' + y + ' z = ' + z;
+    $(atom_position).html(position);
+
+    if (atoms_dict[uuid]['select'].length == 2){
+        calculate_distance(uuid);
+        draw_line(uuid);
+    }
+    else if (atoms_dict[uuid]['select'].length == 3){
+        calculate_angle(uuid);
+        draw_line(uuid);
+    }
+
+    console.log(event);
+}
+//Add a onMouseover callback to every shape
+$(document).ready(function(){
+    $("shape").each(function() {
+        // $(this).attr("onMouseover", "handleOnMouseover_shape(this)");
+        // $(this).attr("onclick", "handleClick_shape(this)");
+    });
+    //Add a onMouseover callback to every transform
+    $("transform").each(function() {
+        // $(this).attr("onMouseover", "handleOnMouseover_transform(this)");
+        // $(this).attr("onclick", "handleClick_transform(this)");
+    });
+});
+$(document).on("click", function(e) {
+    if (e.target === document || e.target.tagName === "BODY" || e.target.tagName === "HTML") {
+        $('#marker').attr('scale', "0.0001 0.0001 0.0001");
+    }
+});
+//Handle onMouseover on a shape
+function handleOnMouseover_shape(shape)
+{
+    var atom_kind = '#lastonMouseoverObject_kind_'.concat($(shape).attr("uuid"));
+    var atom_index = '#lastonMouseoverObject_index_'.concat($(shape).attr("uuid"));
+    $(atom_kind).html($(shape).attr("kind"));
+    $(atom_index).html($(shape).attr("index"));
+}
+//Handle onMouseover on a shape
+function handleClick_shape(shape)
+{
+    var atom_kind = '#lastonMouseoverObject_kind_'.concat($(shape).attr("uuid"));
+    var atom_index = '#lastonMouseoverObject_index_'.concat($(shape).attr("uuid"));
+    $(atom_kind).html($(shape).attr("kind"));
+    $(atom_index).html($(shape).attr("index"));
+}
+//Handle onMouseover on a transform
+function handleOnMouseover_transform(transform)
+{
+    var atom_position = '#position_'.concat($(transform).attr("uuid"));
+    var coord = $(transform).attr("translation").split(" "[0]);
+    var x = roundWithTwoDecimals(coord[0]);
+    var y = roundWithTwoDecimals(coord[1]);
+    var z = roundWithTwoDecimals(coord[2]);
+    var position = 'x = ' + x + ' y = ' + y + ' z = ' + z;
+    $(atom_position).html(position);
+}
+
+function calculate_distance(uuid)
+{
+    var measure = '#measure_'.concat(uuid);
+    var c1 = document.getElementById(atoms_dict[uuid]['select'][0]).getAttribute("translation").split(" ");
+    var c2 = document.getElementById(atoms_dict[uuid]['select'][1]).getAttribute("translation").split(" ");
+    r = (c1[0] - c2[0])*(c1[0] - c2[0]) + (c1[1] - c2[1])*(c1[1] - c2[1]) + (c1[2] - c2[2])*(c1[2] - c2[2]);
+    r = roundWithTwoDecimals(Math.sqrt(r));
+    var dist = 'Distance:  ' + r;
+    $(measure).html(dist);
+}
+function calculate_angle(uuid)
+{
+    var measure = '#measure_'.concat(uuid);
+    var c1 = document.getElementById(atoms_dict[uuid]['select'][0]).getAttribute("translation").split(" ");
+    var c2 = document.getElementById(atoms_dict[uuid]['select'][1]).getAttribute("translation").split(" ");
+    var c3 = document.getElementById(atoms_dict[uuid]['select'][2]).getAttribute("translation").split(" ");
+    var AB = Math.sqrt(Math.pow(c2[0]-c1[0],2)+ Math.pow(c2[1]-c1[1],2) + Math.pow(c2[2]-c1[2],2));    
+    var BC = Math.sqrt(Math.pow(c2[0]-c3[0],2)+ Math.pow(c2[1]-c3[1],2) + Math.pow(c2[2]-c3[2],2)); 
+    var AC = Math.sqrt(Math.pow(c3[0]-c1[0],2)+ Math.pow(c3[1]-c1[1],2)+ Math.pow(c3[2]-c1[2],2));
+    var angle = roundWithTwoDecimals(Math.acos((BC*BC+AB*AB-AC*AC)/(2*BC*AB))*180/3.1415926);
+    var angle = 'angle:  ' + angle;
+    $(measure).html(angle);
+}
+function draw_line(uuid)
+{
+    var n = atoms_dict[uuid]['select'].length;
+    var coordIndex = '';
+    var point = document.getElementById(atoms_dict[uuid]['select'][0]).getAttribute("translation");
+    for (var i = 1; i < n; i++) {
+        var c1 = document.getElementById(atoms_dict[uuid]['select'][i]).getAttribute("translation");
+        coordIndex = coordIndex + (i-1) + ' ' + i + ' -1 ';
+        point = point + ' ' + c1 + ' ';
+    }
+    $('#line_coor_' + 0 + '_' + uuid).attr('point', point);
+    $('#line_ind_' + 0 + '_' + uuid).attr('coordIndex', coordIndex);
+    $('#switch_line_' + 0 + '_' + uuid).attr('whichChoice', 0);
+}
+//Handle models
+function spacefilling(uuid)
+{
+    var objs = document.getElementsByName(''.concat('at_'.concat(uuid)));
+    var max=objs.length;
+    for (var i=0; i< max; i++) {
+        objs[i].setAttribute("scale", "1.0, 1.0, 1.0");
+        }
+    document.getElementById('bs_'.concat(uuid)).setAttribute("whichChoice", '-1');
+    document.getElementById('ps_'.concat(uuid)).setAttribute("whichChoice", '-1');
+}
+function ballstick(uuid)
+{
+    if (atoms_dict[uuid]['bond']=='False'){ 
+        alert('Please set bond parameter in your code, e.g. bond=1.0!');
+        $('#error_'.concat(uuid)).html('(^_^) Please set bond parameter in your code, e.g. bond=1.0!');
+		return ;
+    }
+    var objs = document.getElementsByName(''.concat('at_'.concat(uuid)));
+    var max=objs.length;
+    for (var i=0; i< max; i++) {
+        objs[i].setAttribute("scale", "0.6, 0.6, 0.6");
+        }
+    document.getElementById('bs_'.concat(uuid)).setAttribute("whichChoice", '0');
+    document.getElementById('ps_'.concat(uuid)).setAttribute("whichChoice", '-1');
+}
+function polyhedra(uuid)
+{
+    if (atoms_dict[uuid]['polyhedra'].length==0){ 
+        alert('Please set polyhedra parameter in your code, e.g. polyhedra={"Ti": ["O"]}!');
+        $('#error_'.concat(uuid)).html('(^_^) Please set polyhedra parameter in your code, e.g. polyhedra={"Ti": ["O"]}!');
+		return ;
+    }
+    var objs = document.getElementsByName(''.concat('at_'.concat(uuid)));
+    var max=objs.length;
+    for (var i=0; i< max; i++) {
+        objs[i].setAttribute("scale", "0.6, 0.6, 0.6");
+        }
+    document.getElementById('bs_'.concat(uuid)).setAttribute("whichChoice", '0');
+    document.getElementById('ps_'.concat(uuid)).setAttribute("whichChoice", '0');
+}
+function none(uuid)
+{
+    var objs = document.getElementsByName(''.concat('am_'.concat(uuid)));
+    var max=objs.length;
+    for (var i=0; i< max; i++) {
+        objs[i].setAttribute("transparency", "0.0");
+        }
+    document.getElementById('ele_'.concat(uuid)).setAttribute("whichChoice", '-1');
+    document.getElementById('ind_'.concat(uuid)).setAttribute("whichChoice", '-1');
+}
+        
+function element(uuid)
+{
+    if (atoms_dict[uuid]['label']=='False'){ 
+        alert('To show element, please set label=True in your code!');
+        $('#error_'.concat(uuid)).html('(^_^) To show element, please set label=True in your code!');
+		return ;
+	}
+    var objs = document.getElementsByName(''.concat('am_'.concat(uuid)));
+    var max=objs.length;
+    for (var i=0; i< max; i++) {
+        objs[i].setAttribute("transparency", "0.4");
+        }
+    document.getElementById('ele_'.concat(uuid)).setAttribute("whichChoice", '0');
+    document.getElementById('ind_'.concat(uuid)).setAttribute("whichChoice", '-1');
+    document.getElementById('bs_'.concat(uuid)).setAttribute("whichChoice", '-1');
+}
+function index(uuid)
+{
+    if (atoms_dict[uuid]['label']=='False'){ 
+        alert('To show index, please set label=True in your code!');
+        $('#error_'.concat(uuid)).html('(^_^) To show index, please set label=True in your code!');
+		return ;
+	}
+    var objs = document.getElementsByName(''.concat('am_'.concat(uuid)));
+    var max=objs.length;
+    for (var i=0; i< max; i++) {
+        objs[i].setAttribute("transparency", "0.4");
+        }
+    document.getElementById('ind_'.concat(uuid)).setAttribute("whichChoice", '0');
+    document.getElementById('ele_'.concat(uuid)).setAttribute("whichChoice", '-1');
+    document.getElementById('bs_'.concat(uuid)).setAttribute("whichChoice", '-1');
+}
+// } 
+</script> </body>
+</html>

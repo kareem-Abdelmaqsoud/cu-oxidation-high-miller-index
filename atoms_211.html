@@ -1,0 +1,1306 @@
+<html>
+<head>
+<title>ASE atomic visualization</title>
+<link rel="stylesheet" type="text/css"
+ href="https://www.x3dom.org/x3dom/release/x3dom.css">
+</link>
+<script type="text/javascript"
+ src="https://www.x3dom.org/x3dom/release/x3dom.js">
+</script>
+<style>
+* {
+    box-sizing: border-box;
+  }
+ 
+/* Create two unequal columns that floats next to each other */
+.column {
+  float: left;
+  padding: 1px;
+}
+
+.left {
+  width: 20%;
+}
+
+.right {
+  width: 80%;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+#x3dase{
+    top:0;
+    width: 80%;
+    height: 80%;
+    border:2px solid darkorange;        
+}
+
+#sidebar{
+    top:0;
+    border:2px solid darkorange;        
+}
+
+
+/* Sidebar component containers */
+.ui-widget-header
+{
+  background-color: lightblue;
+  font-size: 16px;
+
+}
+.sidebarComponent
+{
+    padding:2px 2px 2px 2px;
+    font-size: medium;
+}
+
+.button {
+  background-color: #4CAF50; /* Green */
+  border: 1px solid green;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  cursor: pointer;
+  /* float: left; */
+}
+
+</style></head>
+<body>
+<div class = "column left", id = "sidebar">
+
+    <div class="ui-widget-header">Model</div>
+    <div class="sidebarComponent">
+        <form style="text-align:left;">
+            <button type="button" class = "button" onclick="spacefilling('5da375c4')">Ball</button>
+            <button type="button" class = "button" onclick="ballstick('5da375c4')">Ball-and-stick</button>
+            <button type="button" class = "button" onclick="polyhedra('5da375c4')">Polyhedra</button>
+        </form>
+    </div>
+    <div class="ui-widget-header">Label</div>
+    <div class="sidebarComponent">
+        <form style="text-align:left;">
+            <button type="button" class = "button" onclick="none('5da375c4')">None</button>
+            <button type="button" class = "button" onclick="element('5da375c4')"> Element</button>
+            <button type="button" class = "button" onclick="index('5da375c4')">Index</button>
+        </form>
+    </div>
+
+    <div class="ui-widget-header">Camera</div>
+    <div class="sidebarComponent">
+        <form style="text-align:left;">
+            <button type="button" class = "button" onclick="document.getElementById('camera_ortho_5da375c4').setAttribute('set_bind','true');">Orthographic</button>
+            <button type="button" class = "button" onclick="document.getElementById('camera_persp_5da375c4').setAttribute('set_bind','true');">Perspective</button>
+        </form>
+    </div>
+
+    <div class="ui-widget-header">View</div>
+    <div class="sidebarComponent">
+        <form style="text-align:left;">
+            <button type="button" class = "button" onclick="set_viewpoint('5da375c4', 'top_pos', 'top_ori')">Top</button>
+            <button type="button" class = "button" onclick="set_viewpoint('5da375c4', 'front_pos', 'front_ori')">Front</button>
+            <button type="button" class = "button" onclick="set_viewpoint('5da375c4', 'right_pos', 'right_ori')">Right</button>
+        </form>
+    </div>
+
+    <div class="ui-widget-header">Measurement</div>
+    <div class="sidebarComponent">
+        <form style="text-align:left; font-size: 16px;">
+            <table style="font-size:1.0em;">
+                <td id="lastonMouseoverObject_kind_5da375c4">-</td> <td id="lastonMouseoverObject_index_5da375c4">-</td> 
+                <td id="position_5da375c4">-</td></tr>
+            </table>
+            <p id="measure_5da375c4"></p>
+            <p id="error_5da375c4"></p>
+        </form>
+    </div>
+
+</div>
+
+<script>
+    document.onkeyup = function(e) {
+      var x = event.which || event.keyCode;
+      var label = 0;
+        if (x == 49) {
+            set_viewpoint('5da375c4', 'top_pos', 'top_ori');
+        } else if (x == 50) {
+            set_viewpoint('5da375c4', 'front_pos', 'front_ori');
+        } else if (x == 51) {
+            set_viewpoint('5da375c4', 'right_pos', 'right_ori');
+        } else if (x == 83) {
+          spacefilling('5da375c4');
+        } else if (x == 66) {
+          ballstick('5da375c4');
+        } else if (x == 80) {
+          polyhedra('5da375c4');
+        } else if (x == 52) {
+            element('5da375c4');
+        } else if (x == 53) {
+            index('5da375c4');
+        } else if (x == 54) {
+            none('5da375c4');
+        }
+      };
+    </script> <div class = "column right" > 
+   <X3D id = "x3dase" PrimitiveQuality = "high" > 
+     <Scene > 
+       <Transform id = "t_camera_persp_5da375c4" rotation = "0 0 0 0" > 
+         <Viewpoint id = "camera_persp_5da375c4" position = "4.7668372456942425 7.297699336778032 51.35964363546839" centerOfRotation = "4.7668372456942425 7.297699336778032 19.51513743861879" orientation = "0 0 0 0" description = "camera" > 
+         </Viewpoint> 
+       </Transform> 
+       <Transform id = "t_camera_ortho_5da375c4" rotation = "0 0 0 0" > 
+         <OrthoViewpoint id = "camera_ortho_5da375c4" position = "4.7668372456942425 7.297699336778032 51.35964363546839" centerOfRotation = "4.7668372456942425 7.297699336778032 19.51513743861879" orientation = "0 0 0 0" fieldOfView = "-10.614835398949866 -10.614835398949866 10.614835398949866 10.614835398949866" description = "camera" > 
+         </OrthoViewpoint> 
+       </Transform> 
+       <Group onclick = "handleGroupClick(event, '5da375c4')" > 
+         <Switch whichChoice = "-1" > 
+           <Shape DEF = "as_Cu" id = "as_Cu_5da375c4" > 
+             <Appearance DEF = "app_Cu" > 
+               <Material name = "am_5da375c4" diffuseColor = "0.784 0.502 0.2" transparency = "0.01" > 
+               </Material> 
+             </Appearance> 
+             <Sphere DEF = "asp_Cu" radius = "1.32" > 
+             </Sphere> 
+           </Shape> 
+         </Switch> 
+         <Transform DEF = "at_0_5da375c4" uuid = "5da375c4" id = "at_0_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "0.0 6.24 18.39" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "0" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_1_5da375c4" uuid = "5da375c4" id = "at_1_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "0.0 6.24 22.89" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "1" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_2_5da375c4" uuid = "5da375c4" id = "at_2_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "0.0 1.99 21.39" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "2" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_3_5da375c4" uuid = "5da375c4" id = "at_3_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "0.0 4.11 19.89" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "3" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_4_5da375c4" uuid = "5da375c4" id = "at_4_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "1.3 4.11 22.14" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "4" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_5_5da375c4" uuid = "5da375c4" id = "at_5_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "1.3 6.24 20.64" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "5" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_6_5da375c4" uuid = "5da375c4" id = "at_6_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "1.3 1.99 19.14" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "6" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_7_5da375c4" uuid = "5da375c4" id = "at_7_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "1.3 1.99 23.64" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "7" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_8_5da375c4" uuid = "5da375c4" id = "at_8_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "0.0 1.99 16.89" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "8" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_9_5da375c4" uuid = "5da375c4" id = "at_9_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "2.6 4.11 15.39" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "9" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_10_5da375c4" uuid = "5da375c4" id = "at_10_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "1.3 6.24 16.14" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "10" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_11_5da375c4" uuid = "5da375c4" id = "at_11_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "1.3 4.11 17.64" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "11" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_12_5da375c4" uuid = "5da375c4" id = "at_12_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "0.0 12.61 18.39" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "12" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_13_5da375c4" uuid = "5da375c4" id = "at_13_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "0.0 12.61 22.89" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "13" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_14_5da375c4" uuid = "5da375c4" id = "at_14_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "0.0 8.36 21.39" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "14" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_15_5da375c4" uuid = "5da375c4" id = "at_15_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "0.0 10.48 19.89" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "15" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_16_5da375c4" uuid = "5da375c4" id = "at_16_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "1.3 10.48 22.14" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "16" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_17_5da375c4" uuid = "5da375c4" id = "at_17_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "1.3 12.61 20.64" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "17" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_18_5da375c4" uuid = "5da375c4" id = "at_18_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "1.3 8.36 19.14" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "18" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_19_5da375c4" uuid = "5da375c4" id = "at_19_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "1.3 8.36 23.64" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "19" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_20_5da375c4" uuid = "5da375c4" id = "at_20_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "0.0 8.36 16.89" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "20" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_21_5da375c4" uuid = "5da375c4" id = "at_21_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "2.6 10.48 15.39" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "21" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_22_5da375c4" uuid = "5da375c4" id = "at_22_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "1.3 12.61 16.14" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "22" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_23_5da375c4" uuid = "5da375c4" id = "at_23_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "1.3 10.48 17.64" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "23" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_24_5da375c4" uuid = "5da375c4" id = "at_24_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "2.6 6.24 18.39" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "24" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_25_5da375c4" uuid = "5da375c4" id = "at_25_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "2.6 6.24 22.89" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "25" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_26_5da375c4" uuid = "5da375c4" id = "at_26_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "2.6 1.99 21.39" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "26" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_27_5da375c4" uuid = "5da375c4" id = "at_27_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "2.6 4.11 19.89" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "27" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_28_5da375c4" uuid = "5da375c4" id = "at_28_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "3.9 4.11 22.14" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "28" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_29_5da375c4" uuid = "5da375c4" id = "at_29_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "3.9 6.24 20.64" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "29" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_30_5da375c4" uuid = "5da375c4" id = "at_30_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "3.9 1.99 19.14" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "30" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_31_5da375c4" uuid = "5da375c4" id = "at_31_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "3.9 1.99 23.64" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "31" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_32_5da375c4" uuid = "5da375c4" id = "at_32_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "2.6 1.99 16.89" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "32" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_33_5da375c4" uuid = "5da375c4" id = "at_33_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "5.2 4.11 15.39" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "33" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_34_5da375c4" uuid = "5da375c4" id = "at_34_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "3.9 6.24 16.14" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "34" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_35_5da375c4" uuid = "5da375c4" id = "at_35_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "3.9 4.11 17.64" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "35" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_36_5da375c4" uuid = "5da375c4" id = "at_36_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "2.6 12.61 18.39" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "36" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_37_5da375c4" uuid = "5da375c4" id = "at_37_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "2.6 12.61 22.89" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "37" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_38_5da375c4" uuid = "5da375c4" id = "at_38_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "2.6 8.36 21.39" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "38" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_39_5da375c4" uuid = "5da375c4" id = "at_39_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "2.6 10.48 19.89" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "39" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_40_5da375c4" uuid = "5da375c4" id = "at_40_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "3.9 10.48 22.14" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "40" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_41_5da375c4" uuid = "5da375c4" id = "at_41_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "3.9 12.61 20.64" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "41" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_42_5da375c4" uuid = "5da375c4" id = "at_42_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "3.9 8.36 19.14" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "42" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_43_5da375c4" uuid = "5da375c4" id = "at_43_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "3.9 8.36 23.64" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "43" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_44_5da375c4" uuid = "5da375c4" id = "at_44_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "2.6 8.36 16.89" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "44" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_45_5da375c4" uuid = "5da375c4" id = "at_45_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "5.2 10.48 15.39" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "45" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_46_5da375c4" uuid = "5da375c4" id = "at_46_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "3.9 12.61 16.14" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "46" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_47_5da375c4" uuid = "5da375c4" id = "at_47_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "3.9 10.48 17.64" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "47" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_48_5da375c4" uuid = "5da375c4" id = "at_48_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "5.2 6.24 18.39" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "48" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_49_5da375c4" uuid = "5da375c4" id = "at_49_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "5.2 6.24 22.89" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "49" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_50_5da375c4" uuid = "5da375c4" id = "at_50_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "5.2 1.99 21.39" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "50" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_51_5da375c4" uuid = "5da375c4" id = "at_51_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "5.2 4.11 19.89" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "51" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_52_5da375c4" uuid = "5da375c4" id = "at_52_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "6.5 4.11 22.14" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "52" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_53_5da375c4" uuid = "5da375c4" id = "at_53_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "6.5 6.24 20.64" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "53" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_54_5da375c4" uuid = "5da375c4" id = "at_54_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "6.5 1.99 19.14" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "54" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_55_5da375c4" uuid = "5da375c4" id = "at_55_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "6.5 1.99 23.64" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "55" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_56_5da375c4" uuid = "5da375c4" id = "at_56_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "5.2 1.99 16.89" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "56" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_57_5da375c4" uuid = "5da375c4" id = "at_57_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "7.8 4.11 15.39" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "57" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_58_5da375c4" uuid = "5da375c4" id = "at_58_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "6.5 6.24 16.14" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "58" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_59_5da375c4" uuid = "5da375c4" id = "at_59_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "6.5 4.11 17.64" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "59" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_60_5da375c4" uuid = "5da375c4" id = "at_60_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "5.2 12.61 18.39" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "60" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_61_5da375c4" uuid = "5da375c4" id = "at_61_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "5.2 12.61 22.89" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "61" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_62_5da375c4" uuid = "5da375c4" id = "at_62_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "5.2 8.36 21.39" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "62" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_63_5da375c4" uuid = "5da375c4" id = "at_63_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "5.2 10.48 19.89" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "63" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_64_5da375c4" uuid = "5da375c4" id = "at_64_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "6.5 10.48 22.14" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "64" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_65_5da375c4" uuid = "5da375c4" id = "at_65_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "6.5 12.61 20.64" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "65" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_66_5da375c4" uuid = "5da375c4" id = "at_66_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "6.5 8.36 19.14" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "66" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_67_5da375c4" uuid = "5da375c4" id = "at_67_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "6.5 8.36 23.64" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "67" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_68_5da375c4" uuid = "5da375c4" id = "at_68_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "5.2 8.36 16.89" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "68" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_69_5da375c4" uuid = "5da375c4" id = "at_69_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "7.8 10.48 15.39" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "69" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_70_5da375c4" uuid = "5da375c4" id = "at_70_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "6.5 12.61 16.14" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "70" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_71_5da375c4" uuid = "5da375c4" id = "at_71_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "6.5 10.48 17.64" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "71" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_72_5da375c4" uuid = "5da375c4" id = "at_72_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "7.8 6.24 18.39" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "72" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_73_5da375c4" uuid = "5da375c4" id = "at_73_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "7.8 6.24 22.89" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "73" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_74_5da375c4" uuid = "5da375c4" id = "at_74_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "7.8 1.99 21.39" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "74" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_75_5da375c4" uuid = "5da375c4" id = "at_75_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "7.8 4.11 19.89" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "75" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_76_5da375c4" uuid = "5da375c4" id = "at_76_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "9.1 4.11 22.14" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "76" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_77_5da375c4" uuid = "5da375c4" id = "at_77_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "9.1 6.24 20.64" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "77" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_78_5da375c4" uuid = "5da375c4" id = "at_78_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "9.1 1.99 19.14" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "78" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_79_5da375c4" uuid = "5da375c4" id = "at_79_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "9.1 1.99 23.64" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "79" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_80_5da375c4" uuid = "5da375c4" id = "at_80_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "7.8 1.99 16.89" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "80" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_81_5da375c4" uuid = "5da375c4" id = "at_81_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "10.4 4.11 15.39" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "81" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_82_5da375c4" uuid = "5da375c4" id = "at_82_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "9.1 6.24 16.14" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "82" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_83_5da375c4" uuid = "5da375c4" id = "at_83_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "9.1 4.11 17.64" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "83" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_84_5da375c4" uuid = "5da375c4" id = "at_84_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "7.8 12.61 18.39" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "84" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_85_5da375c4" uuid = "5da375c4" id = "at_85_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "7.8 12.61 22.89" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "85" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_86_5da375c4" uuid = "5da375c4" id = "at_86_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "7.8 8.36 21.39" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "86" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_87_5da375c4" uuid = "5da375c4" id = "at_87_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "7.8 10.48 19.89" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "87" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_88_5da375c4" uuid = "5da375c4" id = "at_88_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "9.1 10.48 22.14" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "88" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_89_5da375c4" uuid = "5da375c4" id = "at_89_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "9.1 12.61 20.64" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "89" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_90_5da375c4" uuid = "5da375c4" id = "at_90_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "9.1 8.36 19.14" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "90" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_91_5da375c4" uuid = "5da375c4" id = "at_91_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "9.1 8.36 23.64" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "91" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_92_5da375c4" uuid = "5da375c4" id = "at_92_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "7.8 8.36 16.89" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "92" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_93_5da375c4" uuid = "5da375c4" id = "at_93_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "10.4 10.48 15.39" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "93" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_94_5da375c4" uuid = "5da375c4" id = "at_94_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "9.1 12.61 16.14" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "94" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+         <Transform DEF = "at_95_5da375c4" uuid = "5da375c4" id = "at_95_5da375c4" radius = "1.32" name = "at_5da375c4" translation = "9.1 10.48 17.64" scale = "1 1 1" > 
+           <Shape kind = "Cu" index = "95" uuid = "5da375c4" > 
+             <Appearance USE = "app_Cu" > 
+             </Appearance> 
+             <Sphere USE = "asp_Cu" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+       </Group> 
+       <Shape > 
+         <IndexedLineSet coordIndex = "0 1 -1 0 2 -1 0 4 -1 1 3 -1 1 5 -1 2 3 -1 2 6 -1 3 7 -1 4 5 -1 4 6 -1 5 7 -1 6 7 -1" > 
+           <Coordinate point = "[[ 0.00000000e+00  0.00000000e+00  0.00000000e+00  0.00000000e+00
+   0.00000000e+00  3.60279460e+01  2.04839487e-15  1.27378025e+01
+  -2.04839487e-15  2.04839487e-15  1.27378025e+01  3.60279460e+01
+   1.04003722e+01  0.00000000e+00  6.36839125e-16  1.04003722e+01
+   0.00000000e+00  3.60279460e+01  1.04003722e+01  1.27378025e+01
+  -1.41155574e-15  1.04003722e+01  1.27378025e+01  3.60279460e+01]]" > 
+           </Coordinate> 
+         </IndexedLineSet> 
+         <Appearance > 
+           <Material diffuseColor = "0 0 0" emissiveColor = "0 0.5 1" > 
+           </Material> 
+         </Appearance> 
+       </Shape> 
+       <Switch id = "switch_marker_0_5da375c4" whichChoice = "-1" > 
+         <Transform id = "marker_0_5da375c4" scale = ".1 .1 .1" translation = "5 0 0" > 
+           <Shape isPickable = "False" > 
+             <Appearance > 
+               <Material diffuseColor = "#FFD966" transparency = "0.5" > 
+               </Material> 
+             </Appearance> 
+             <Sphere radius = "1.0" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+       </Switch> 
+       <Switch id = "switch_marker_1_5da375c4" whichChoice = "-1" > 
+         <Transform id = "marker_1_5da375c4" scale = ".1 .1 .1" translation = "5 0 0" > 
+           <Shape isPickable = "False" > 
+             <Appearance > 
+               <Material diffuseColor = "#FFD966" transparency = "0.5" > 
+               </Material> 
+             </Appearance> 
+             <Sphere radius = "1.0" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+       </Switch> 
+       <Switch id = "switch_marker_2_5da375c4" whichChoice = "-1" > 
+         <Transform id = "marker_2_5da375c4" scale = ".1 .1 .1" translation = "5 0 0" > 
+           <Shape isPickable = "False" > 
+             <Appearance > 
+               <Material diffuseColor = "#FFD966" transparency = "0.5" > 
+               </Material> 
+             </Appearance> 
+             <Sphere radius = "1.0" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+       </Switch> 
+       <Switch id = "switch_marker_3_5da375c4" whichChoice = "-1" > 
+         <Transform id = "marker_3_5da375c4" scale = ".1 .1 .1" translation = "5 0 0" > 
+           <Shape isPickable = "False" > 
+             <Appearance > 
+               <Material diffuseColor = "#FFD966" transparency = "0.5" > 
+               </Material> 
+             </Appearance> 
+             <Sphere radius = "1.0" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+       </Switch> 
+       <Switch id = "switch_marker_4_5da375c4" whichChoice = "-1" > 
+         <Transform id = "marker_4_5da375c4" scale = ".1 .1 .1" translation = "5 0 0" > 
+           <Shape isPickable = "False" > 
+             <Appearance > 
+               <Material diffuseColor = "#FFD966" transparency = "0.5" > 
+               </Material> 
+             </Appearance> 
+             <Sphere radius = "1.0" > 
+             </Sphere> 
+           </Shape> 
+         </Transform> 
+       </Switch> 
+       <Switch id = "switch_line_0_5da375c4" whichChoice = "-1" > 
+         <Shape > 
+           <IndexedLineSet id = "line_ind_0_5da375c4" solid = "false" coordIndex = "0 1 -1" > 
+             <Coordinate id = "line_coor_0_5da375c4" point = "0 0 0 0 0 1" > 
+             </Coordinate> 
+           </IndexedLineSet> 
+           <Appearance > 
+             <Material diffuseColor = "0 0 0" emissiveColor = "0 0.5 1" > 
+             </Material> 
+           </Appearance> 
+         </Shape> 
+       </Switch> 
+       <Switch id = "switch_line_1_5da375c4" whichChoice = "-1" > 
+         <Shape > 
+           <IndexedLineSet id = "line_ind_1_5da375c4" solid = "false" coordIndex = "0 1 -1" > 
+             <Coordinate id = "line_coor_1_5da375c4" point = "0 0 0 0 0 1" > 
+             </Coordinate> 
+           </IndexedLineSet> 
+           <Appearance > 
+             <Material diffuseColor = "0 0 0" emissiveColor = "0 0.5 1" > 
+             </Material> 
+           </Appearance> 
+         </Shape> 
+       </Switch> 
+     </Scene> 
+   </X3D> 
+ </div> 
+
+<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.0.min.js" ></script>
+ <script >
+ if (atoms_dict == undefined) {var atoms_dict = {"new": true};}; 
+atoms_dict["5da375c4"] = {com: "4.77 7.30 19.52", 
+top_pos: "4.77 7.30 51.36", 
+front_pos: "4.77 -24.55 19.52", 
+right_pos: "36.61 7.30 19.52", 
+left_pos: "-27.08 7.30 19.52", 
+top_ori: "0 0 0 0", 
+front_ori: "1 0 0 1.57079", 
+right_ori: "0 1 0 1.57079", 
+left_ori: "0 1 0 -1.57079", 
+select: [], 
+uuid: "5da375c4", 
+label: "False", 
+bond: "False", 
+polyhedra: {}, 
+};
+
+// if (atoms_dict[uuid]['new']){
+function setQuality(uuid, quality){
+        // $('#error_'.concat(atoms_dict[uuid]['uuid'])).html('uuid: '.concat(atoms_dict[uuid]["uuid"]));
+        var x3d = 'x3dase_' + uuid;
+        document.getElementById(x3d).setAttribute('PrimitiveQuality', quality);
+    }
+function set_viewpoint(uuid, pos, ori){
+    // $('#error_'.concat(atoms_dict[uuid]['uuid'])).html('uuid: '.concat(atoms_dict[uuid]["uuid"]));
+    var persp = 'camera_persp_' + uuid;
+    var ortho = 'camera_ortho_' + uuid;
+    document.getElementById(persp).setAttribute('orientation', atoms_dict[uuid][ori]);
+    document.getElementById(persp).setAttribute('position', atoms_dict[uuid][pos]);
+    document.getElementById(ortho).setAttribute('orientation', atoms_dict[uuid][ori]);
+    document.getElementById(ortho).setAttribute('position', atoms_dict[uuid][pos]);
+}
+
+//Round a float value to x.xx format
+function roundWithTwoDecimals(value)
+{
+    var x = (Math.round(value * 100)) / 100;
+    var y = x.toFixed(2);
+    return y;
+}
+//Handle click on any group member
+function handleGroupClick(event)
+{
+    //Mark hitting point
+    var target = event.target;
+    var uuid = target.parentNode.getAttribute('uuid')
+    var radius = target.parentNode.getAttribute('radius');
+    var scale = target.parentNode.getAttribute('scale');
+    scale = parseFloat(radius)*parseFloat(scale)*1.2;
+    var scale = ' ' + scale + ' ' + scale + ' ' + scale;
+    var translation = target.parentNode.getAttribute('translation');
+    var id = target.parentNode.getAttribute('id');
+    if (window.event.ctrlKey) {
+        atoms_dict[uuid]['select'].push(id);
+
+    }
+    else {
+        for (var i=1; i<= atoms_dict[uuid]['select'].length; i++) {
+            $('#switch_marker_' + i + '_' + uuid).attr('whichChoice', -1);
+        }
+        atoms_dict[uuid]['select'] = [];
+        atoms_dict[uuid]['select'].push(id);
+        $('#switch_marker_' + 2 + '_' + uuid).attr('whichChoice', -1);
+}
+    var n = atoms_dict[uuid]['select'].length;
+    $('#switch_marker_' + n + '_' + uuid).attr('whichChoice', 0);
+    $('#marker_' + n + '_' + uuid).attr('translation', translation);
+    $('#marker_' + n + '_' + uuid).attr('scale', scale);
+    var atom_kind = '#lastonMouseoverObject_kind_'.concat(uuid);
+    var atom_index = '#lastonMouseoverObject_index_'.concat(uuid);
+    $(atom_kind).html(target.getAttribute("kind"));
+    $(atom_index).html(target.getAttribute("index"));
+    //
+    var coord = translation.split(" ")
+    var atom_position = '#position_'.concat(uuid);
+    var x = roundWithTwoDecimals(coord[0]);
+    var y = roundWithTwoDecimals(coord[1]);
+    var z = roundWithTwoDecimals(coord[2]);
+    var position = 'x = ' + x + ' y = ' + y + ' z = ' + z;
+    $(atom_position).html(position);
+
+    if (atoms_dict[uuid]['select'].length == 2){
+        calculate_distance(uuid);
+        draw_line(uuid);
+    }
+    else if (atoms_dict[uuid]['select'].length == 3){
+        calculate_angle(uuid);
+        draw_line(uuid);
+    }
+
+    console.log(event);
+}
+//Add a onMouseover callback to every shape
+$(document).ready(function(){
+    $("shape").each(function() {
+        // $(this).attr("onMouseover", "handleOnMouseover_shape(this)");
+        // $(this).attr("onclick", "handleClick_shape(this)");
+    });
+    //Add a onMouseover callback to every transform
+    $("transform").each(function() {
+        // $(this).attr("onMouseover", "handleOnMouseover_transform(this)");
+        // $(this).attr("onclick", "handleClick_transform(this)");
+    });
+});
+$(document).on("click", function(e) {
+    if (e.target === document || e.target.tagName === "BODY" || e.target.tagName === "HTML") {
+        $('#marker').attr('scale', "0.0001 0.0001 0.0001");
+    }
+});
+//Handle onMouseover on a shape
+function handleOnMouseover_shape(shape)
+{
+    var atom_kind = '#lastonMouseoverObject_kind_'.concat($(shape).attr("uuid"));
+    var atom_index = '#lastonMouseoverObject_index_'.concat($(shape).attr("uuid"));
+    $(atom_kind).html($(shape).attr("kind"));
+    $(atom_index).html($(shape).attr("index"));
+}
+//Handle onMouseover on a shape
+function handleClick_shape(shape)
+{
+    var atom_kind = '#lastonMouseoverObject_kind_'.concat($(shape).attr("uuid"));
+    var atom_index = '#lastonMouseoverObject_index_'.concat($(shape).attr("uuid"));
+    $(atom_kind).html($(shape).attr("kind"));
+    $(atom_index).html($(shape).attr("index"));
+}
+//Handle onMouseover on a transform
+function handleOnMouseover_transform(transform)
+{
+    var atom_position = '#position_'.concat($(transform).attr("uuid"));
+    var coord = $(transform).attr("translation").split(" "[0]);
+    var x = roundWithTwoDecimals(coord[0]);
+    var y = roundWithTwoDecimals(coord[1]);
+    var z = roundWithTwoDecimals(coord[2]);
+    var position = 'x = ' + x + ' y = ' + y + ' z = ' + z;
+    $(atom_position).html(position);
+}
+
+function calculate_distance(uuid)
+{
+    var measure = '#measure_'.concat(uuid);
+    var c1 = document.getElementById(atoms_dict[uuid]['select'][0]).getAttribute("translation").split(" ");
+    var c2 = document.getElementById(atoms_dict[uuid]['select'][1]).getAttribute("translation").split(" ");
+    r = (c1[0] - c2[0])*(c1[0] - c2[0]) + (c1[1] - c2[1])*(c1[1] - c2[1]) + (c1[2] - c2[2])*(c1[2] - c2[2]);
+    r = roundWithTwoDecimals(Math.sqrt(r));
+    var dist = 'Distance:  ' + r;
+    $(measure).html(dist);
+}
+function calculate_angle(uuid)
+{
+    var measure = '#measure_'.concat(uuid);
+    var c1 = document.getElementById(atoms_dict[uuid]['select'][0]).getAttribute("translation").split(" ");
+    var c2 = document.getElementById(atoms_dict[uuid]['select'][1]).getAttribute("translation").split(" ");
+    var c3 = document.getElementById(atoms_dict[uuid]['select'][2]).getAttribute("translation").split(" ");
+    var AB = Math.sqrt(Math.pow(c2[0]-c1[0],2)+ Math.pow(c2[1]-c1[1],2) + Math.pow(c2[2]-c1[2],2));    
+    var BC = Math.sqrt(Math.pow(c2[0]-c3[0],2)+ Math.pow(c2[1]-c3[1],2) + Math.pow(c2[2]-c3[2],2)); 
+    var AC = Math.sqrt(Math.pow(c3[0]-c1[0],2)+ Math.pow(c3[1]-c1[1],2)+ Math.pow(c3[2]-c1[2],2));
+    var angle = roundWithTwoDecimals(Math.acos((BC*BC+AB*AB-AC*AC)/(2*BC*AB))*180/3.1415926);
+    var angle = 'angle:  ' + angle;
+    $(measure).html(angle);
+}
+function draw_line(uuid)
+{
+    var n = atoms_dict[uuid]['select'].length;
+    var coordIndex = '';
+    var point = document.getElementById(atoms_dict[uuid]['select'][0]).getAttribute("translation");
+    for (var i = 1; i < n; i++) {
+        var c1 = document.getElementById(atoms_dict[uuid]['select'][i]).getAttribute("translation");
+        coordIndex = coordIndex + (i-1) + ' ' + i + ' -1 ';
+        point = point + ' ' + c1 + ' ';
+    }
+    $('#line_coor_' + 0 + '_' + uuid).attr('point', point);
+    $('#line_ind_' + 0 + '_' + uuid).attr('coordIndex', coordIndex);
+    $('#switch_line_' + 0 + '_' + uuid).attr('whichChoice', 0);
+}
+//Handle models
+function spacefilling(uuid)
+{
+    var objs = document.getElementsByName(''.concat('at_'.concat(uuid)));
+    var max=objs.length;
+    for (var i=0; i< max; i++) {
+        objs[i].setAttribute("scale", "1.0, 1.0, 1.0");
+        }
+    document.getElementById('bs_'.concat(uuid)).setAttribute("whichChoice", '-1');
+    document.getElementById('ps_'.concat(uuid)).setAttribute("whichChoice", '-1');
+}
+function ballstick(uuid)
+{
+    if (atoms_dict[uuid]['bond']=='False'){ 
+        alert('Please set bond parameter in your code, e.g. bond=1.0!');
+        $('#error_'.concat(uuid)).html('(^_^) Please set bond parameter in your code, e.g. bond=1.0!');
+		return ;
+    }
+    var objs = document.getElementsByName(''.concat('at_'.concat(uuid)));
+    var max=objs.length;
+    for (var i=0; i< max; i++) {
+        objs[i].setAttribute("scale", "0.6, 0.6, 0.6");
+        }
+    document.getElementById('bs_'.concat(uuid)).setAttribute("whichChoice", '0');
+    document.getElementById('ps_'.concat(uuid)).setAttribute("whichChoice", '-1');
+}
+function polyhedra(uuid)
+{
+    if (atoms_dict[uuid]['polyhedra'].length==0){ 
+        alert('Please set polyhedra parameter in your code, e.g. polyhedra={"Ti": ["O"]}!');
+        $('#error_'.concat(uuid)).html('(^_^) Please set polyhedra parameter in your code, e.g. polyhedra={"Ti": ["O"]}!');
+		return ;
+    }
+    var objs = document.getElementsByName(''.concat('at_'.concat(uuid)));
+    var max=objs.length;
+    for (var i=0; i< max; i++) {
+        objs[i].setAttribute("scale", "0.6, 0.6, 0.6");
+        }
+    document.getElementById('bs_'.concat(uuid)).setAttribute("whichChoice", '0');
+    document.getElementById('ps_'.concat(uuid)).setAttribute("whichChoice", '0');
+}
+function none(uuid)
+{
+    var objs = document.getElementsByName(''.concat('am_'.concat(uuid)));
+    var max=objs.length;
+    for (var i=0; i< max; i++) {
+        objs[i].setAttribute("transparency", "0.0");
+        }
+    document.getElementById('ele_'.concat(uuid)).setAttribute("whichChoice", '-1');
+    document.getElementById('ind_'.concat(uuid)).setAttribute("whichChoice", '-1');
+}
+        
+function element(uuid)
+{
+    if (atoms_dict[uuid]['label']=='False'){ 
+        alert('To show element, please set label=True in your code!');
+        $('#error_'.concat(uuid)).html('(^_^) To show element, please set label=True in your code!');
+		return ;
+	}
+    var objs = document.getElementsByName(''.concat('am_'.concat(uuid)));
+    var max=objs.length;
+    for (var i=0; i< max; i++) {
+        objs[i].setAttribute("transparency", "0.4");
+        }
+    document.getElementById('ele_'.concat(uuid)).setAttribute("whichChoice", '0');
+    document.getElementById('ind_'.concat(uuid)).setAttribute("whichChoice", '-1');
+    document.getElementById('bs_'.concat(uuid)).setAttribute("whichChoice", '-1');
+}
+function index(uuid)
+{
+    if (atoms_dict[uuid]['label']=='False'){ 
+        alert('To show index, please set label=True in your code!');
+        $('#error_'.concat(uuid)).html('(^_^) To show index, please set label=True in your code!');
+		return ;
+	}
+    var objs = document.getElementsByName(''.concat('am_'.concat(uuid)));
+    var max=objs.length;
+    for (var i=0; i< max; i++) {
+        objs[i].setAttribute("transparency", "0.4");
+        }
+    document.getElementById('ind_'.concat(uuid)).setAttribute("whichChoice", '0');
+    document.getElementById('ele_'.concat(uuid)).setAttribute("whichChoice", '-1');
+    document.getElementById('bs_'.concat(uuid)).setAttribute("whichChoice", '-1');
+}
+// } 
+</script> </body>
+</html>

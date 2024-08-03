@@ -1,0 +1,13 @@
+vasp
+vasp-interactive
+results
+test
+kirby_work
+checkpoints
+logs
+nebs
+nebs_small_slabs
+lmdbs
+__pycache__
+.ipynb_checkpoints
+gnoc_oc22_oc20_all_s2ef.pt
